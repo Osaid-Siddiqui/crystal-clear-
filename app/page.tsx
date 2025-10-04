@@ -75,7 +75,7 @@ export default function CrystalClearDetailing() {
     },
   ]
 
-  const galleryImages = [
+  const baseGallery = [
     "/luxury-car-exterior-detailing-shine.jpg",
     "/car-interior-leather-seats-cleaning.jpg",
     "/car-paint-correction.png",
@@ -83,6 +83,8 @@ export default function CrystalClearDetailing() {
     "/car-ceramic-coating.png",
     "/car-dashboard-interior-detailing.jpg",
   ]
+
+  const galleryImages = [...baseGallery, ...baseGallery, ...baseGallery]
 
   const pricingPlans = [
     {
@@ -217,7 +219,7 @@ export default function CrystalClearDetailing() {
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
-                  className={`capitalize transition-colors hover:text-[#ac73e2] ${
+                  className={`capitalize hover-underline-slide hover-lift transition-colors hover:text-[#ac73e2] ${
                     activeSection === section ? "text-[#ac73e2]" : "text-white"
                   }`}
                 >
@@ -231,6 +233,7 @@ export default function CrystalClearDetailing() {
 
       {/* Hero Section */}
       <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+        <div className="media-bg media-bg--home" aria-hidden="true" />
         <div className="absolute inset-0 bg-gradient-to-br from-[#421272] via-[#1a0723] to-[#634277]" />
 
         {/* Animated stars */}
@@ -323,7 +326,8 @@ export default function CrystalClearDetailing() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20 bg-gradient-to-b from-[#1a0723] to-[#421272]">
+      <section id="services" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#1a0723] to-[#421272]">
+        <div className="media-bg media-bg--services" aria-hidden="true" />
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -371,7 +375,8 @@ export default function CrystalClearDetailing() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-gradient-to-b from-[#421272] to-[#1a0723]">
+      <section id="about" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#421272] to-[#1a0723]">
+        <div className="media-bg media-bg--about" aria-hidden="true" />
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -398,7 +403,8 @@ export default function CrystalClearDetailing() {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 bg-gradient-to-b from-[#1a0723] to-[#421272]">
+      <section id="testimonials" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#1a0723] to-[#421272]">
+        <div className="media-bg media-bg--testimonials" aria-hidden="true" />
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -453,13 +459,13 @@ export default function CrystalClearDetailing() {
 
             <button
               onClick={() => setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 bg-[#421272] hover:bg-[#634277] p-2 rounded-full transition-colors"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 bg-[#421272] hover:bg-[#634277] p-2 rounded-full transition-colors hover-lift"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
             <button
               onClick={() => setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 bg-[#421272] hover:bg-[#634277] p-2 rounded-full transition-colors"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 bg-[#421272] hover:bg-[#634277] p-2 rounded-full transition-colors hover-lift"
             >
               <ChevronRight className="w-6 h-6" />
             </button>
@@ -468,7 +474,8 @@ export default function CrystalClearDetailing() {
       </section>
 
       {/* Gallery Section */}
-      <section id="gallery" className="py-20 bg-gradient-to-b from-[#421272] to-[#1a0723]">
+      <section id="gallery" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#421272] to-[#1a0723]">
+        <div className="media-bg media-bg--gallery" aria-hidden="true" />
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -543,7 +550,8 @@ export default function CrystalClearDetailing() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-20 bg-gradient-to-b from-[#1a0723] to-[#421272]">
+      <section id="pricing" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#1a0723] to-[#421272]">
+        <div className="media-bg media-bg--pricing" aria-hidden="true" />
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -608,7 +616,8 @@ export default function CrystalClearDetailing() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gradient-to-b from-[#421272] to-[#1a0723]">
+      <section id="contact" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#421272] to-[#1a0723]">
+        <div className="media-bg media-bg--contact" aria-hidden="true" />
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -700,7 +709,7 @@ export default function CrystalClearDetailing() {
                     </div>
                     <div>
                       <h3 className="text-white font-semibold mb-2">Phone</h3>
-                      <a href="tel:7206412574" className="text-[#ac73e2] hover:text-[#cd507e] transition-colors">
+                      <a href="tel:7206412574" className="text-[#ac73e2] hover:text-[#cd507e] hover-underline-slide hover-lift transition-colors">
                         (720) 641-2574
                       </a>
                     </div>
@@ -718,7 +727,7 @@ export default function CrystalClearDetailing() {
                       <h3 className="text-white font-semibold mb-2">Email</h3>
                       <a
                         href="mailto:Tallyn.adams@gmail.com"
-                        className="text-[#ac73e2] hover:text-[#cd507e] transition-colors break-all"
+                        className="text-[#ac73e2] hover:text-[#cd507e] hover-underline-slide hover-lift transition-colors break-all"
                       >
                         Tallyn.adams@gmail.com
                       </a>
@@ -804,21 +813,21 @@ export default function CrystalClearDetailing() {
                 <motion.a
                   href="#"
                   whileHover={{ scale: 1.2, rotate: 5 }}
-                  className="w-10 h-10 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center text-white hover:shadow-lg hover:shadow-[#ac73e2]/50 transition-shadow"
+                  className="w-10 h-10 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center text-white hover:shadow-lg hover:shadow-[#ac73e2]/50 hover-lift transition-shadow"
                 >
                   <Facebook className="w-5 h-5" />
                 </motion.a>
                 <motion.a
                   href="#"
                   whileHover={{ scale: 1.2, rotate: 5 }}
-                  className="w-10 h-10 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center text-white hover:shadow-lg hover:shadow-[#ac73e2]/50 transition-shadow"
+                  className="w-10 h-10 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center text-white hover:shadow-lg hover:shadow-[#ac73e2]/50 hover-lift transition-shadow"
                 >
                   <Instagram className="w-5 h-5" />
                 </motion.a>
                 <motion.a
                   href="#"
                   whileHover={{ scale: 1.2, rotate: 5 }}
-                  className="w-10 h-10 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center text-white hover:shadow-lg hover:shadow-[#ac73e2]/50 transition-shadow"
+                  className="w-10 h-10 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center text-white hover:shadow-lg hover:shadow-[#ac73e2]/50 hover-lift transition-shadow"
                 >
                   <Linkedin className="w-5 h-5" />
                 </motion.a>
