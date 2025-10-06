@@ -233,44 +233,51 @@ export default function CrystalClearDetailing() {
     }
   }
 
-  const BeforeAfter = ({ index }: { index: number }) => {
-    const [pos, setPos] = useState(50)
-    const pairs = [
-      {
-        before: "/car-dashboard-interior-detailing.jpg",
-        after: "/car-interior-leather-seats-cleaning.jpg",
-        altB: "Interior before",
-        altA: "Interior after",
-      },
-      {
-        before: "/car-wheel-rim-detailing.jpg",
-        after: "/luxury-car-exterior-detailing-shine.jpg",
-        altB: "Exterior before",
-        altA: "Exterior after",
-      },
-    ]
-    const pair = index === 3 ? pairs[0] : pairs[1]
-    return (
-      <div className="relative rounded-lg overflow-hidden select-none md:col-span-2 lg:col-span-3 h-72 md:h-96 lg:h-[28rem]">
-        <Image src={pair.before} alt={pair.altB} fill className="object-cover" />
-        <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-          <Image src={pair.after} alt={pair.altA} fill className="object-cover" />
+  type BeforeAfterProps = {
+    before: string
+    after: string
+    beforeAlt: string
+    afterAlt: string
+    label: string
+  }
+
+  const BeforeAfter = ({ before, after, beforeAlt, afterAlt, label }: BeforeAfterProps) => (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      className="col-span-full md:col-span-2 lg:col-span-3"
+    >
+      <div className="flex flex-col gap-4 sm:flex-row">
+        <div className="relative flex-1 h-56 sm:h-64 lg:h-72 rounded-2xl overflow-hidden border border-[#634277] bg-[#421272]/40 shadow-lg shadow-[#ac73e2]/20 transition-transform duration-300 hover:scale-[1.02] group">
+          <Image
+            src={before}
+            alt={beforeAlt}
+            fill
+            className="object-cover filter saturate-50 brightness-75 contrast-75 transition-transform duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-[#2d1406]/45 mix-blend-multiply pointer-events-none" aria-hidden="true" />
+          <span className="absolute left-5 top-5 text-sm font-semibold uppercase tracking-[0.4em] text-white/60">
+            Before
+          </span>
         </div>
-        <input
-          type="range"
-          min={0}
-          max={100}
-          value={pos}
-          onChange={(e) => setPos(Number(e.target.value))}
-          className="absolute bottom-3 left-1/2 -translate-x-1/2 w-2/3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:size-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#ac73e2]"
-          aria-label="Compare before and after"
-        />
-        <div className="absolute inset-y-0" style={{ left: `${pos}%` }}>
-          <div className="w-0.5 h-full bg-white/60" />
+        <div className="relative flex-1 h-56 sm:h-64 lg:h-72 rounded-2xl overflow-hidden border border-[#634277] bg-[#421272]/40 shadow-lg shadow-[#ac73e2]/20 transition-transform duration-300 hover:scale-[1.02] group">
+          <Image
+            src={after}
+            alt={afterAlt}
+            fill
+            className="object-cover filter brightness-110 saturate-150 contrast-125 transition-transform duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/15 pointer-events-none" aria-hidden="true" />
+          <span className="absolute left-5 top-5 text-sm font-semibold uppercase tracking-[0.4em] text-white/60">
+            After
+          </span>
         </div>
       </div>
-    )
-  }
+      <p className="mt-4 text-center text-xs sm:text-sm uppercase tracking-[0.2em] text-[#e6c0dc]">{label}</p>
+    </motion.div>
+  )
 
   return (
     <div className="min-h-screen bg-[#1a0723] text-white">
