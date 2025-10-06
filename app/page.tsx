@@ -99,16 +99,24 @@ export default function CrystalClearDetailing() {
 
   const galleryItems = [
     {
-      src: "/luxury-car-exterior-detailing-shine.jpg",
-      alt: "High gloss exterior detail finish",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F5ed344284dcb4fd999bba1b5e28066f7?format=webp&width=800",
+      alt: "Detailed sedan with reflective finish parked in driveway",
     },
     {
-      src: "/car-interior-leather-seats-cleaning.jpg",
-      alt: "Pristine leather interior after detailing",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F27f5912ef4b4463db778766262f019d9?format=webp&width=800",
+      alt: "Vehicle covered in thick foam during wash",
     },
     {
-      src: "/car-paint-correction.png",
-      alt: "Paint correction service in progress",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F26505d29058e4d91baa421879a6e25f7?format=webp&width=800",
+      alt: "Clean white SUV exterior after detailing",
+    },
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2Ff7d45c2cfd774ea4a0045998f6c5f575?format=webp&width=800",
+      alt: "Freshly detailed SUV interior seating area",
+    },
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F89c76cf403a247cbbab351635be18d51?format=webp&width=800",
+      alt: "Spotless cargo area after deep cleaning",
     },
   ]
 
