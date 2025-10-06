@@ -29,7 +29,7 @@ import Image from "next/image"
 
 export default function CrystalClearDetailing() {
   const [activeSection, setActiveSection] = useState("home")
-  const [selectedImage, setSelectedImage] = useState<number | null>(null)
+  const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string } | null>(null)
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const { scrollY } = useScroll()
   const opacity = useTransform(scrollY, [0, 300], [1, 0])
