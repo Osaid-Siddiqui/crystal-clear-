@@ -898,18 +898,29 @@ export default function CrystalClearDetailing() {
             <div>
               <h3 className="text-white font-semibold mb-4">Contact Info</h3>
               <div className="space-y-2 text-[#e6c0dc]">
-                <p className="flex items-center gap-2">
-                  <Phone className="w-4 h-4" />
+                <a
+                  href="tel:7206412574"
+                  className="flex items-center gap-2 hover:text-[#ac73e2] transition-colors hover-underline-slide"
+                >
+                  <Phone className="w-4 h-4" aria-hidden="true" />
                   (720) 641-2574
-                </p>
-                <p className="flex items-center gap-2">
-                  <Mail className="w-4 h-4" />
+                </a>
+                <a
+                  href="mailto:Tallyn.adams@gmail.com"
+                  className="flex items-center gap-2 hover:text-[#ac73e2] transition-colors hover-underline-slide break-all"
+                >
+                  <Mail className="w-4 h-4" aria-hidden="true" />
                   Tallyn.adams@gmail.com
-                </p>
-                <p className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" />
+                </a>
+                <a
+                  href="https://www.google.com/maps?q=Denver+Metro+Area"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:text-[#ac73e2] transition-colors hover-underline-slide"
+                >
+                  <MapPin className="w-4 h-4" aria-hidden="true" />
                   Denver Metro Area
-                </p>
+                </a>
               </div>
             </div>
 
