@@ -823,7 +823,7 @@ export default function CrystalClearDetailing() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-[#421272]/50 border-[#634277]">
+              <Card className="bg-[#421272]/80 border-[#634277] backdrop-blur-sm">
                 <CardContent className="pt-6">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center flex-shrink-0">
