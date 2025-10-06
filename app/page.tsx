@@ -574,31 +574,37 @@ export default function CrystalClearDetailing() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Gallery items with before/after sliders at positions 4 and 5 */}
-            {galleryImages.map((image, index) => (
-              index === 3 || index === 4 ? (
-                <BeforeAfter key={`ba-${index}`} index={index} />
+            {galleryItems.map((item, index) =>
+              item.type === "comparison" ? (
+                <BeforeAfter
+                  key={`comparison-${item.label}`}
+                  before={item.before}
+                  after={item.after}
+                  beforeAlt={item.beforeAlt}
+                  afterAlt={item.afterAlt}
+                  label={item.label}
+                />
               ) : (
                 <motion.div
-                  key={index}
+                  key={item.src}
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{ scale: 1.05 }}
-                  className="relative aspect-video rounded-lg overflow-hidden cursor-pointer group"
-                  onClick={() => setSelectedImage(index)}
+                  className="relative aspect-video rounded-lg overflow-hidden cursor-pointer group border border-[#634277] bg-[#421272]/40 shadow-lg shadow-[#ac73e2]/10"
+                  onClick={() => setSelectedImage({ src: item.src, alt: item.alt })}
                 >
                   <Image
-                    src={image || "/placeholder.svg"}
-                    alt={`Gallery image ${index + 1}`}
+                    src={item.src}
+                    alt={item.alt}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#1a0723]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </motion.div>
               )
-            ))}
+            )}
           </div>
         </div>
 
