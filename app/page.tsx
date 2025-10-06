@@ -195,6 +195,45 @@ export default function CrystalClearDetailing() {
     }
   }
 
+  const BeforeAfter = ({ index }: { index: number }) => {
+    const [pos, setPos] = useState(50)
+    const pairs = [
+      {
+        before: "/car-dashboard-interior-detailing.jpg",
+        after: "/car-interior-leather-seats-cleaning.jpg",
+        altB: "Interior before",
+        altA: "Interior after",
+      },
+      {
+        before: "/car-wheel-rim-detailing.jpg",
+        after: "/luxury-car-exterior-detailing-shine.jpg",
+        altB: "Exterior before",
+        altA: "Exterior after",
+      },
+    ]
+    const pair = index === 3 ? pairs[0] : pairs[1]
+    return (
+      <div className="relative aspect-video rounded-lg overflow-hidden select-none">
+        <Image src={pair.before} alt={pair.altB} fill className="object-cover" />
+        <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
+          <Image src={pair.after} alt={pair.altA} fill className="object-cover" />
+        </div>
+        <input
+          type="range"
+          min={0}
+          max={100}
+          value={pos}
+          onChange={(e) => setPos(Number(e.target.value))}
+          className="absolute bottom-3 left-1/2 -translate-x-1/2 w-2/3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:size-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#ac73e2]"
+          aria-label="Compare before and after"
+        />
+        <div className="absolute inset-y-0" style={{ left: `${pos}%` }}>
+          <div className="w-0.5 h-full bg-white/60" />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-[#1a0723] text-white">
       {/* Navigation */}
@@ -490,32 +529,37 @@ export default function CrystalClearDetailing() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Gallery items with before/after sliders at positions 4 and 5 */}
             {galleryImages.map((image, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                className="relative aspect-video rounded-lg overflow-hidden cursor-pointer group"
-                onClick={() => setSelectedImage(index)}
-              >
-                <Image
-                  src={image || "/placeholder.svg"}
-                  alt={`Gallery image ${index + 1}`}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1a0723]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </motion.div>
+              index === 3 || index === 4 ? (
+                <BeforeAfter key={`ba-${index}`} index={index} />
+              ) : (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
+                  className="relative aspect-video rounded-lg overflow-hidden cursor-pointer group"
+                  onClick={() => setSelectedImage(index)}
+                >
+                  <Image
+                    src={image || "/placeholder.svg"}
+                    alt={`Gallery image ${index + 1}`}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1a0723]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </motion.div>
+              )
             ))}
           </div>
         </div>
 
         {/* Lightbox */}
         <AnimatePresence>
-          {selectedImage !== null && (
+          {selectedImage !== null && selectedImage !== 3 && selectedImage !== 4 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
