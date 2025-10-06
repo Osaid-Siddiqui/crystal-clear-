@@ -126,12 +126,12 @@ export default function CrystalClearDetailing() {
 
   const pricingPlans = [
     {
-      name: "Basic Detail",
+      name: "Basic Detail (Essential Clean)",
       price: "$99",
       features: ["Exterior wash & wax", "Interior vacuum", "Window cleaning", "Tire shine"],
     },
     {
-      name: "Premium Detail",
+      name: "Premium Detail (Luxury Finish)",
       price: "$199",
       features: [
         "Everything in Basic",
@@ -143,7 +143,7 @@ export default function CrystalClearDetailing() {
       popular: true,
     },
     {
-      name: "Paint Correction Detail",
+      name: "Diamond Detail (Paint Correction Detail)",
       price: "$350",
       features: [
         "Everything in Premium",
