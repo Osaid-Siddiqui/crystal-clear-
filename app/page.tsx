@@ -117,11 +117,7 @@ export default function CrystalClearDetailing() {
       type: "comparison" as const,
       ...comparisonShowcases[1],
     },
-    {
-      type: "image" as const,
-      src: "/car-ceramic-coating.png",
-      alt: "Ceramic coating being applied to exterior",
-    },
+    
   ]
 
   const pricingPlans = [
