@@ -569,7 +569,7 @@ export default function CrystalClearDetailing() {
                       ))}
                     </div>
                     <p className="text-[#e6c0dc] text-lg mb-6 text-center italic">
-                      "{testimonials[currentTestimonial].text}"
+                      &ldquo;{testimonials[currentTestimonial].text}&rdquo;
                     </p>
                     <p className="text-[#ac73e2] font-semibold text-center">
                       - {testimonials[currentTestimonial].name}
