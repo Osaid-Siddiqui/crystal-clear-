@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   Sparkles,
   Car,
@@ -148,39 +149,37 @@ export default function CrystalClearDetailing() {
     }
   }
 
+  const [selectedPackage, setSelectedPackage] = useState<string | null>(null)
+
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     phone: "",
+    package: "",
     message: "",
   })
 
   const [errors, setErrors] = useState({
     name: "",
-    email: "",
     phone: "",
+    package: "",
     message: "",
   })
 
   const validateForm = () => {
     const newErrors = {
       name: "",
-      email: "",
       phone: "",
+      package: "",
       message: "",
     }
 
     if (!formData.name.trim()) newErrors.name = "Name is required"
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required"
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid"
-    }
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone is required"
     } else if (!/^\d{10}$/.test(formData.phone.replace(/\D/g, ""))) {
       newErrors.phone = "Phone must be 10 digits"
     }
+    if (!formData.package.trim()) newErrors.package = "Please select a package"
     if (!formData.message.trim()) newErrors.message = "Message is required"
 
     setErrors(newErrors)
@@ -191,7 +190,8 @@ export default function CrystalClearDetailing() {
     e.preventDefault()
     if (validateForm()) {
       alert("Form submitted successfully!")
-      setFormData({ name: "", email: "", phone: "", message: "" })
+      setFormData({ name: "", phone: "", package: "", message: "" })
+      setSelectedPackage(null)
     }
   }
 
@@ -602,7 +602,11 @@ export default function CrystalClearDetailing() {
                     </ul>
                     <Button
                       className="w-full mt-6 bg-gradient-to-r from-[#9630b7] to-[#b13f9e] hover:from-[#8021d7] hover:to-[#cd507e] text-white border-0"
-                      onClick={() => scrollToSection("contact")}
+                      onClick={() => {
+                        setSelectedPackage(plan.name)
+                        setFormData((prev) => ({ ...prev, package: plan.name }))
+                        scrollToSection("contact")
+                      }}
                     >
                       Book Now
                     </Button>
@@ -654,14 +658,22 @@ export default function CrystalClearDetailing() {
                       {errors.name && <p className="text-[#cd507e] text-sm mt-1">{errors.name}</p>}
                     </div>
                     <div>
-                      <Input
-                        type="email"
-                        placeholder="Your Email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="bg-[#1a0723] border-[#634277] text-white placeholder:text-[#634277]"
-                      />
-                      {errors.email && <p className="text-[#cd507e] text-sm mt-1">{errors.email}</p>}
+                      <Select
+                        value={formData.package || selectedPackage || ""}
+                        onValueChange={(value) => setFormData({ ...formData, package: value })}
+                      >
+                        <SelectTrigger className="bg-[#1a0723] border-[#634277] text-white w-full">
+                          <SelectValue placeholder="Select a package" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[#1a0723] border-[#634277] text-white">
+                          {pricingPlans.map((p) => (
+                            <SelectItem key={p.name} value={p.name}>
+                              {p.name} - {p.price}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {errors.package && <p className="text-[#cd507e] text-sm mt-1">{errors.package}</p>}
                     </div>
                     <div>
                       <Input
