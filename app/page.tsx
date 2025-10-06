@@ -610,7 +610,7 @@ export default function CrystalClearDetailing() {
 
         {/* Lightbox */}
         <AnimatePresence>
-          {selectedImage !== null && selectedImage !== 3 && selectedImage !== 4 && (
+          {selectedImage && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -632,8 +632,8 @@ export default function CrystalClearDetailing() {
                 onClick={(e) => e.stopPropagation()}
               >
                 <Image
-                  src={galleryImages[selectedImage] || "/placeholder.svg"}
-                  alt={`Gallery image ${selectedImage + 1}`}
+                  src={selectedImage.src}
+                  alt={selectedImage.alt}
                   fill
                   className="object-contain"
                 />
