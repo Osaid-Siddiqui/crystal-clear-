@@ -290,7 +290,6 @@ export default function CrystalClearDetailing() {
             alt={afterAlt}
             fill
             className="object-cover filter brightness-110 saturate-150 contrast-125 transition-transform duration-500 group-hover:scale-105"
-            priority={false}
           />
           <div className="comparison-highlight" aria-hidden="true" />
           <div className="comparison-before">
