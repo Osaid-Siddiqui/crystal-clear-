@@ -29,7 +29,7 @@ import Image from "next/image"
 
 export default function CrystalClearDetailing() {
   const [activeSection, setActiveSection] = useState("home")
-  const [selectedImage, setSelectedImage] = useState<number | null>(null)
+  const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string } | null>(null)
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const { scrollY } = useScroll()
   const opacity = useTransform(scrollY, [0, 300], [1, 0])
@@ -76,24 +76,58 @@ export default function CrystalClearDetailing() {
     },
   ]
 
-  const baseGallery = [
-    "/luxury-car-exterior-detailing-shine.jpg",
-    "/car-interior-leather-seats-cleaning.jpg",
-    "/car-paint-correction.png",
-    "/car-wheel-rim-detailing.jpg",
-    "/car-dashboard-interior-detailing.jpg",
+  const comparisonShowcases = [
+    {
+      before: "/car-wheel-rim-detailing.jpg",
+      after: "/luxury-car-exterior-detailing-shine.jpg",
+      beforeAlt: "Vehicle exterior before professional detailing",
+      afterAlt: "Vehicle exterior after professional detailing",
+      label: "Exterior Revival",
+    },
+    {
+      before: "/car-dashboard-interior-detailing.jpg",
+      after: "/car-interior-leather-seats-cleaning.jpg",
+      beforeAlt: "Vehicle interior before deep cleaning service",
+      afterAlt: "Vehicle interior after deep cleaning service",
+      label: "Interior Renewal",
+    },
   ]
 
-  const galleryImages = baseGallery
+  const galleryItems = [
+    {
+      type: "image" as const,
+      src: "/luxury-car-exterior-detailing-shine.jpg",
+      alt: "High gloss exterior detail finish",
+    },
+    {
+      type: "image" as const,
+      src: "/car-interior-leather-seats-cleaning.jpg",
+      alt: "Pristine leather interior after detailing",
+    },
+    {
+      type: "image" as const,
+      src: "/car-paint-correction.png",
+      alt: "Paint correction service in progress",
+    },
+    {
+      type: "comparison" as const,
+      ...comparisonShowcases[0],
+    },
+    {
+      type: "comparison" as const,
+      ...comparisonShowcases[1],
+    },
+    
+  ]
 
   const pricingPlans = [
     {
-      name: "Basic Detail",
+      name: "Basic Detail (Essential Clean)",
       price: "$99",
       features: ["Exterior wash & wax", "Interior vacuum", "Window cleaning", "Tire shine"],
     },
     {
-      name: "Premium Detail",
+      name: "Premium Detail (Luxury Finish)",
       price: "$199",
       features: [
         "Everything in Basic",
@@ -105,7 +139,7 @@ export default function CrystalClearDetailing() {
       popular: true,
     },
     {
-      name: "Paint Correction Detail",
+      name: "Diamond Detail (Paint Correction Detail)",
       price: "$350",
       features: [
         "Everything in Premium",
@@ -195,44 +229,51 @@ export default function CrystalClearDetailing() {
     }
   }
 
-  const BeforeAfter = ({ index }: { index: number }) => {
-    const [pos, setPos] = useState(50)
-    const pairs = [
-      {
-        before: "/car-dashboard-interior-detailing.jpg",
-        after: "/car-interior-leather-seats-cleaning.jpg",
-        altB: "Interior before",
-        altA: "Interior after",
-      },
-      {
-        before: "/car-wheel-rim-detailing.jpg",
-        after: "/luxury-car-exterior-detailing-shine.jpg",
-        altB: "Exterior before",
-        altA: "Exterior after",
-      },
-    ]
-    const pair = index === 3 ? pairs[0] : pairs[1]
-    return (
-      <div className="relative rounded-lg overflow-hidden select-none md:col-span-2 lg:col-span-3 h-72 md:h-96 lg:h-[28rem]">
-        <Image src={pair.before} alt={pair.altB} fill className="object-cover" />
-        <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-          <Image src={pair.after} alt={pair.altA} fill className="object-cover" />
+  type BeforeAfterProps = {
+    before: string
+    after: string
+    beforeAlt: string
+    afterAlt: string
+    label: string
+  }
+
+  const BeforeAfter = ({ before, after, beforeAlt, afterAlt, label }: BeforeAfterProps) => (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      className="col-span-full md:col-span-2 lg:col-span-3"
+    >
+      <div className="flex flex-col gap-4 sm:flex-row">
+        <div className="relative flex-1 h-56 sm:h-64 lg:h-72 rounded-2xl overflow-hidden border border-[#634277] bg-[#421272]/40 shadow-lg shadow-[#ac73e2]/20 transition-transform duration-300 hover:scale-[1.02] group">
+          <Image
+            src={before}
+            alt={beforeAlt}
+            fill
+            className="object-cover filter saturate-50 brightness-75 contrast-75 transition-transform duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-[#2d1406]/45 mix-blend-multiply pointer-events-none" aria-hidden="true" />
+          <span className="absolute left-5 top-5 text-sm font-semibold uppercase tracking-[0.4em] text-white/60">
+            Before
+          </span>
         </div>
-        <input
-          type="range"
-          min={0}
-          max={100}
-          value={pos}
-          onChange={(e) => setPos(Number(e.target.value))}
-          className="absolute bottom-3 left-1/2 -translate-x-1/2 w-2/3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:size-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#ac73e2]"
-          aria-label="Compare before and after"
-        />
-        <div className="absolute inset-y-0" style={{ left: `${pos}%` }}>
-          <div className="w-0.5 h-full bg-white/60" />
+        <div className="relative flex-1 h-56 sm:h-64 lg:h-72 rounded-2xl overflow-hidden border border-[#634277] bg-[#421272]/40 shadow-lg shadow-[#ac73e2]/20 transition-transform duration-300 hover:scale-[1.02] group">
+          <Image
+            src={after}
+            alt={afterAlt}
+            fill
+            className="object-cover filter brightness-110 saturate-150 contrast-125 transition-transform duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/15 pointer-events-none" aria-hidden="true" />
+          <span className="absolute left-5 top-5 text-sm font-semibold uppercase tracking-[0.4em] text-white/60">
+            After
+          </span>
         </div>
       </div>
-    )
-  }
+      <p className="mt-4 text-center text-xs sm:text-sm uppercase tracking-[0.2em] text-[#e6c0dc]">{label}</p>
+    </motion.div>
+  )
 
   return (
     <div className="min-h-screen bg-[#1a0723] text-white">
@@ -529,37 +570,43 @@ export default function CrystalClearDetailing() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Gallery items with before/after sliders at positions 4 and 5 */}
-            {galleryImages.map((image, index) => (
-              index === 3 || index === 4 ? (
-                <BeforeAfter key={`ba-${index}`} index={index} />
+            {galleryItems.map((item, index) =>
+              item.type === "comparison" ? (
+                <BeforeAfter
+                  key={`comparison-${item.label}`}
+                  before={item.before}
+                  after={item.after}
+                  beforeAlt={item.beforeAlt}
+                  afterAlt={item.afterAlt}
+                  label={item.label}
+                />
               ) : (
                 <motion.div
-                  key={index}
+                  key={item.src}
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{ scale: 1.05 }}
-                  className="relative aspect-video rounded-lg overflow-hidden cursor-pointer group"
-                  onClick={() => setSelectedImage(index)}
+                  className="relative aspect-video rounded-lg overflow-hidden cursor-pointer group border border-[#634277] bg-[#421272]/40 shadow-lg shadow-[#ac73e2]/10"
+                  onClick={() => setSelectedImage({ src: item.src, alt: item.alt })}
                 >
                   <Image
-                    src={image || "/placeholder.svg"}
-                    alt={`Gallery image ${index + 1}`}
+                    src={item.src}
+                    alt={item.alt}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#1a0723]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </motion.div>
               )
-            ))}
+            )}
           </div>
         </div>
 
         {/* Lightbox */}
         <AnimatePresence>
-          {selectedImage !== null && selectedImage !== 3 && selectedImage !== 4 && (
+          {selectedImage && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -581,8 +628,8 @@ export default function CrystalClearDetailing() {
                 onClick={(e) => e.stopPropagation()}
               >
                 <Image
-                  src={galleryImages[selectedImage] || "/placeholder.svg"}
-                  alt={`Gallery image ${selectedImage + 1}`}
+                  src={selectedImage.src}
+                  alt={selectedImage.alt}
                   fill
                   className="object-contain"
                 />
@@ -620,7 +667,7 @@ export default function CrystalClearDetailing() {
                 whileHover={{ y: -10 }}
               >
                 <Card
-                  className={`bg-[#421272]/50 border-[#634277] h-full relative ${
+                  className={`bg-[#421272]/60 border-[#634277] h-full relative flex flex-col ${
                     plan.popular ? "border-[#ac73e2] shadow-lg shadow-[#ac73e2]/20" : ""
                   }`}
                 >
@@ -635,8 +682,8 @@ export default function CrystalClearDetailing() {
                       {plan.price}
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-3">
+                  <CardContent className="flex flex-col flex-1 gap-6">
+                    <ul className="space-y-3 flex-1">
                       {plan.features.map((feature, i) => (
                         <li key={i} className="flex items-start gap-2 text-[#e6c0dc]">
                           <Star className="w-5 h-5 fill-[#cd507e] text-[#cd507e] flex-shrink-0 mt-0.5" />
@@ -645,7 +692,7 @@ export default function CrystalClearDetailing() {
                       ))}
                     </ul>
                     <Button
-                      className="w-full mt-6 bg-gradient-to-r from-[#9630b7] to-[#b13f9e] hover:from-[#8021d7] hover:to-[#cd507e] text-white border-0"
+                      className="w-full mt-auto bg-gradient-to-r from-[#9630b7] to-[#b13f9e] hover:from-[#8021d7] hover:to-[#cd507e] text-white border-0"
                       onClick={() => {
                         setSelectedPackage(plan.name)
                         setFormData((prev) => ({ ...prev, package: plan.name }))
@@ -686,7 +733,7 @@ export default function CrystalClearDetailing() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <Card className="bg-[#421272]/50 border-[#634277]">
+              <Card className="bg-[#421272]/80 border-[#634277] backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white">Send us a message</CardTitle>
                 </CardHeader>
@@ -756,7 +803,7 @@ export default function CrystalClearDetailing() {
               transition={{ duration: 0.6 }}
               className="space-y-6"
             >
-              <Card className="bg-[#421272]/50 border-[#634277]">
+              <Card className="bg-[#421272]/80 border-[#634277] backdrop-blur-sm">
                 <CardContent className="pt-6">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center flex-shrink-0">
@@ -772,7 +819,7 @@ export default function CrystalClearDetailing() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-[#421272]/50 border-[#634277]">
+              <Card className="bg-[#421272]/80 border-[#634277] backdrop-blur-sm">
                 <CardContent className="pt-6">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center flex-shrink-0">
@@ -791,7 +838,7 @@ export default function CrystalClearDetailing() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-[#421272]/50 border-[#634277]">
+              <Card className="bg-[#421272]/80 border-[#634277] backdrop-blur-sm">
                 <CardContent className="pt-6">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center flex-shrink-0">
@@ -847,18 +894,29 @@ export default function CrystalClearDetailing() {
             <div>
               <h3 className="text-white font-semibold mb-4">Contact Info</h3>
               <div className="space-y-2 text-[#e6c0dc]">
-                <p className="flex items-center gap-2">
-                  <Phone className="w-4 h-4" />
+                <a
+                  href="tel:7206412574"
+                  className="flex items-center gap-2 hover:text-[#ac73e2] transition-colors hover-underline-slide"
+                >
+                  <Phone className="w-4 h-4" aria-hidden="true" />
                   (720) 641-2574
-                </p>
-                <p className="flex items-center gap-2">
-                  <Mail className="w-4 h-4" />
+                </a>
+                <a
+                  href="mailto:Tallyn.adams@gmail.com"
+                  className="flex items-center gap-2 hover:text-[#ac73e2] transition-colors hover-underline-slide break-all"
+                >
+                  <Mail className="w-4 h-4" aria-hidden="true" />
                   Tallyn.adams@gmail.com
-                </p>
-                <p className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" />
+                </a>
+                <a
+                  href="https://www.google.com/maps?q=Denver+Metro+Area"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:text-[#ac73e2] transition-colors hover-underline-slide"
+                >
+                  <MapPin className="w-4 h-4" aria-hidden="true" />
                   Denver Metro Area
-                </p>
+                </a>
               </div>
             </div>
 
