@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -78,46 +78,38 @@ export default function CrystalClearDetailing() {
 
   const comparisonShowcases = [
     {
-      before: "/car-wheel-rim-detailing.jpg",
-      after: "/luxury-car-exterior-detailing-shine.jpg",
-      beforeAlt: "Vehicle exterior before professional detailing",
-      afterAlt: "Vehicle exterior after professional detailing",
-      label: "Exterior Revival",
+      before:
+        "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2Ff6f8fc2cf060497ab935c4e58e41c410?format=webp&width=800",
+      after:
+        "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F782879bb55d341d5bbcceac1ee867eaa?format=webp&width=800",
+      beforeAlt: "Vehicle before professional detailing",
+      afterAlt: "Vehicle after professional detailing",
+      label: "Foam Wash Transformation",
     },
     {
-      before: "/car-dashboard-interior-detailing.jpg",
-      after: "/car-interior-leather-seats-cleaning.jpg",
-      beforeAlt: "Vehicle interior before deep cleaning service",
-      afterAlt: "Vehicle interior after deep cleaning service",
-      label: "Interior Renewal",
+      before:
+        "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F378d899837ba46faa4d11a8488f9be99?format=webp&width=800",
+      after:
+        "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F40d4105bd84d4d179fab4e96a8f6da4a?format=webp&width=800",
+      beforeAlt: "Vehicle before finishing touches",
+      afterAlt: "Vehicle after finishing touches",
+      label: "Gloss Finish Reveal",
     },
   ]
 
   const galleryItems = [
     {
-      type: "image" as const,
       src: "/luxury-car-exterior-detailing-shine.jpg",
       alt: "High gloss exterior detail finish",
     },
     {
-      type: "image" as const,
       src: "/car-interior-leather-seats-cleaning.jpg",
       alt: "Pristine leather interior after detailing",
     },
     {
-      type: "image" as const,
       src: "/car-paint-correction.png",
       alt: "Paint correction service in progress",
     },
-    {
-      type: "comparison" as const,
-      ...comparisonShowcases[0],
-    },
-    {
-      type: "comparison" as const,
-      ...comparisonShowcases[1],
-    },
-    
   ]
 
   const pricingPlans = [
@@ -237,43 +229,99 @@ export default function CrystalClearDetailing() {
     label: string
   }
 
-  const BeforeAfter = ({ before, after, beforeAlt, afterAlt, label }: BeforeAfterProps) => (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className="col-span-full md:col-span-2 lg:col-span-3"
-    >
-      <div className="flex flex-col gap-4 sm:flex-row">
-        <div className="relative flex-1 h-56 sm:h-64 lg:h-72 rounded-2xl overflow-hidden border border-[#634277] bg-[#421272]/40 shadow-lg shadow-[#ac73e2]/20 transition-transform duration-300 hover:scale-[1.02] group">
-          <Image
-            src={before}
-            alt={beforeAlt}
-            fill
-            className="object-cover filter saturate-50 brightness-75 contrast-75 transition-transform duration-500 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-[#2d1406]/45 mix-blend-multiply pointer-events-none" aria-hidden="true" />
-          <span className="absolute left-5 top-5 text-sm font-semibold uppercase tracking-[0.4em] text-white/60">
-            Before
-          </span>
-        </div>
-        <div className="relative flex-1 h-56 sm:h-64 lg:h-72 rounded-2xl overflow-hidden border border-[#634277] bg-[#421272]/40 shadow-lg shadow-[#ac73e2]/20 transition-transform duration-300 hover:scale-[1.02] group">
+  const BeforeAfter = ({ before, after, beforeAlt, afterAlt, label }: BeforeAfterProps) => {
+    const [position, setPosition] = useState(50)
+    const [isDragging, setIsDragging] = useState(false)
+    const frameRef = useRef<HTMLDivElement>(null)
+
+    const setPositionFromClientX = (clientX: number) => {
+      const frame = frameRef.current
+      if (!frame) return
+      const rect = frame.getBoundingClientRect()
+      if (rect.width === 0) return
+      const relative = ((clientX - rect.left) / rect.width) * 100
+      const clamped = Math.min(100, Math.max(0, relative))
+      setPosition(clamped)
+    }
+
+    const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+      event.preventDefault()
+      setIsDragging(true)
+      setPositionFromClientX(event.clientX)
+    }
+
+    const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+      if (!isDragging) return
+      setPositionFromClientX(event.clientX)
+    }
+
+    const handlePointerUp = () => {
+      setIsDragging(false)
+    }
+
+    const handleRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setPosition(Number(event.target.value))
+    }
+
+    const handleClassName = isDragging ? "comparison-handle comparison-handle--active" : "comparison-handle"
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="flex-1 min-w-[16rem]"
+      >
+        <div
+          ref={frameRef}
+          className="comparison-frame group relative h-56 sm:h-64 lg:h-72 rounded-2xl overflow-hidden border border-[#634277] bg-[#421272]/40 shadow-lg shadow-[#ac73e2]/20 transition-transform duration-300 hover:scale-[1.02]"
+          style={{ "--divider-position": `${position}%` } as React.CSSProperties}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+          onPointerLeave={handlePointerUp}
+          role="group"
+          aria-label={`${label} before and after comparison`}
+        >
           <Image
             src={after}
             alt={afterAlt}
             fill
             className="object-cover filter brightness-110 saturate-150 contrast-125 transition-transform duration-500 group-hover:scale-105"
+            priority={false}
           />
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/15 pointer-events-none" aria-hidden="true" />
-          <span className="absolute left-5 top-5 text-sm font-semibold uppercase tracking-[0.4em] text-white/60">
-            After
-          </span>
+          <div className="comparison-highlight" aria-hidden="true" />
+          <div className="comparison-before">
+            <Image
+              src={before}
+              alt={beforeAlt}
+              fill
+              className="object-cover filter saturate-50 brightness-75 contrast-75 transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="comparison-before-overlay" aria-hidden="true" />
+          </div>
+          <div className="comparison-divider" aria-hidden="true" />
+          <div className="comparison-handle-wrapper" aria-hidden="true">
+            <span className={handleClassName} />
+          </div>
+          <span className="comparison-badge comparison-badge--before">Before</span>
+          <span className="comparison-badge comparison-badge--after">After</span>
+          <input
+            type="range"
+            min={0}
+            max={100}
+            value={position}
+            onChange={handleRangeChange}
+            className="comparison-range"
+            aria-label={`${label} comparison slider`}
+          />
         </div>
-      </div>
-      <p className="mt-4 text-center text-xs sm:text-sm uppercase tracking-[0.2em] text-[#e6c0dc]">{label}</p>
-    </motion.div>
-  )
+        <p className="mt-4 text-center text-xs sm:text-sm uppercase tracking-[0.2em] text-[#e6c0dc]">{label}</p>
+      </motion.div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-[#1a0723] text-white">
@@ -569,38 +617,39 @@ export default function CrystalClearDetailing() {
             <p className="text-[#e6c0dc] text-lg">See the Crystal Clear difference</p>
           </motion.div>
 
+          <div className="flex flex-col md:flex-row gap-6 mb-12">
+            {comparisonShowcases.map((item) => (
+              <BeforeAfter
+                key={`comparison-${item.label}`}
+                before={item.before}
+                after={item.after}
+                beforeAlt={item.beforeAlt}
+                afterAlt={item.afterAlt}
+                label={item.label}
+              />
+            ))}
+          </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {galleryItems.map((item, index) =>
-              item.type === "comparison" ? (
-                <BeforeAfter
-                  key={`comparison-${item.label}`}
-                  before={item.before}
-                  after={item.after}
-                  beforeAlt={item.beforeAlt}
-                  afterAlt={item.afterAlt}
-                  label={item.label}
+            {galleryItems.map((item, index) => (
+              <motion.div
+                key={item.src}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
+                className="relative aspect-video rounded-lg overflow-hidden cursor-pointer group border border-[#634277] bg-[#421272]/40 shadow-lg shadow-[#ac73e2]/10"
+                onClick={() => setSelectedImage({ src: item.src, alt: item.alt })}
+              >
+                <Image
+                  src={item.src}
+                  alt={item.alt}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-110"
                 />
-              ) : (
-                <motion.div
-                  key={item.src}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05 }}
-                  className="relative aspect-video rounded-lg overflow-hidden cursor-pointer group border border-[#634277] bg-[#421272]/40 shadow-lg shadow-[#ac73e2]/10"
-                  onClick={() => setSelectedImage({ src: item.src, alt: item.alt })}
-                >
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1a0723]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </motion.div>
-              )
-            )}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1a0723]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </motion.div>
+            ))}
           </div>
         </div>
 
