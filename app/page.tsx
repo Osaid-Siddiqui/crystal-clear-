@@ -737,7 +737,7 @@ export default function CrystalClearDetailing() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <Card className="bg-[#421272]/50 border-[#634277]">
+              <Card className="bg-[#421272]/80 border-[#634277] backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white">Send us a message</CardTitle>
                 </CardHeader>
