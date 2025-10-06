@@ -144,3 +144,19 @@
 .media-bg--gallery { background-image: url('/car-paint-correction.png'); }
 .media-bg--pricing { background-image: url('/car-ceramic-coating.png'); }
 .media-bg--contact { background-image: url('/car-interior-leather-seats-cleaning.jpg'); }
+
+.comparison-frame { cursor: col-resize; --divider-position: 50%; touch-action: none; }
+.comparison-before { position: absolute; inset: 0; width: var(--divider-position, 50%); overflow: hidden; pointer-events: none; }
+.comparison-before-overlay { position: absolute; inset: 0; background: rgba(45, 20, 6, 0.45); mix-blend-mode: multiply; pointer-events: none; }
+.comparison-highlight { position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.18)); pointer-events: none; }
+.comparison-divider { position: absolute; top: 0; bottom: 0; left: var(--divider-position, 50%); width: 2px; transform: translateX(-50%); background-image: linear-gradient(to bottom, rgba(150, 48, 183, 0.9), rgba(205, 80, 126, 0.9)); pointer-events: none; opacity: 0.9; }
+.comparison-handle-wrapper { position: absolute; top: 50%; left: var(--divider-position, 50%); transform: translate(-50%, -50%); pointer-events: none; }
+.comparison-handle { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 9999px; border: 2px solid rgba(255, 255, 255, 0.85); background-image: linear-gradient(135deg, #9630b7, #cd507e); box-shadow: 0 12px 26px rgba(172, 115, 226, 0.25); transition: transform .2s ease, box-shadow .2s ease; }
+.comparison-handle--active { transform: scale(1.08); box-shadow: 0 16px 32px rgba(172, 115, 226, 0.35); }
+.comparison-range { position: absolute; left: 50%; bottom: 1.25rem; transform: translateX(-50%); width: min(70%, 360px); appearance: none; height: 4px; border-radius: 9999px; background: rgba(255, 255, 255, 0.25); pointer-events: auto; cursor: pointer; }
+.comparison-range::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; border-radius: 9999px; background-image: linear-gradient(135deg, #9630b7, #cd507e); border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 4px 12px rgba(172, 115, 226, 0.35); cursor: ew-resize; }
+.comparison-range::-moz-range-thumb { width: 18px; height: 18px; border-radius: 9999px; background-image: linear-gradient(135deg, #9630b7, #cd507e); border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 4px 12px rgba(172, 115, 226, 0.35); cursor: ew-resize; }
+.comparison-range::-ms-thumb { width: 18px; height: 18px; border-radius: 9999px; background-image: linear-gradient(135deg, #9630b7, #cd507e); border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 4px 12px rgba(172, 115, 226, 0.35); cursor: ew-resize; }
+.comparison-badge { position: absolute; top: 1.25rem; padding: .35rem 1.25rem; border-radius: 9999px; font-size: .75rem; font-weight: 600; letter-spacing: .35em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(6px); border: 1px solid rgba(99, 66, 119, 0.6); background-color: rgba(26, 7, 35, 0.7); pointer-events: none; }
+.comparison-badge--before { left: 1.5rem; }
+.comparison-badge--after { right: 1.5rem; }
