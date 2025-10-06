@@ -213,7 +213,7 @@ export default function CrystalClearDetailing() {
     ]
     const pair = index === 3 ? pairs[0] : pairs[1]
     return (
-      <div className="relative aspect-video rounded-lg overflow-hidden select-none">
+      <div className="relative rounded-lg overflow-hidden select-none md:col-span-2 lg:col-span-3 h-72 md:h-96 lg:h-[28rem]">
         <Image src={pair.before} alt={pair.altB} fill className="object-cover" />
         <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
           <Image src={pair.after} alt={pair.altA} fill className="object-cover" />
