@@ -76,15 +76,53 @@ export default function CrystalClearDetailing() {
     },
   ]
 
-  const baseGallery = [
-    "/luxury-car-exterior-detailing-shine.jpg",
-    "/car-interior-leather-seats-cleaning.jpg",
-    "/car-paint-correction.png",
-    "/car-wheel-rim-detailing.jpg",
-    "/car-dashboard-interior-detailing.jpg",
+  const comparisonShowcases = [
+    {
+      before: "/car-wheel-rim-detailing.jpg",
+      after: "/luxury-car-exterior-detailing-shine.jpg",
+      beforeAlt: "Vehicle exterior before professional detailing",
+      afterAlt: "Vehicle exterior after professional detailing",
+      label: "Exterior Revival",
+    },
+    {
+      before: "/car-dashboard-interior-detailing.jpg",
+      after: "/car-interior-leather-seats-cleaning.jpg",
+      beforeAlt: "Vehicle interior before deep cleaning service",
+      afterAlt: "Vehicle interior after deep cleaning service",
+      label: "Interior Renewal",
+    },
   ]
 
-  const galleryImages = baseGallery
+  const galleryItems = [
+    {
+      type: "image" as const,
+      src: "/luxury-car-exterior-detailing-shine.jpg",
+      alt: "High gloss exterior detail finish",
+    },
+    {
+      type: "image" as const,
+      src: "/car-interior-leather-seats-cleaning.jpg",
+      alt: "Pristine leather interior after detailing",
+    },
+    {
+      type: "image" as const,
+      src: "/car-paint-correction.png",
+      alt: "Paint correction service in progress",
+    },
+    {
+      type: "comparison" as const,
+      ...comparisonShowcases[0],
+    },
+    {
+      type: "comparison" as const,
+      ...comparisonShowcases[1],
+    },
+    {
+      type: "image" as const,
+      src: "/car-ceramic-coating.png",
+      alt: "Ceramic coating being applied to exterior",
+    },
+  ]
 
   const pricingPlans = [
     {
