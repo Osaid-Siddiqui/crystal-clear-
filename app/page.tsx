@@ -48,7 +48,7 @@ export default function CrystalClearDetailing() {
     {
       icon: <Shield className="w-8 h-8" />,
       title: "Paint Protection",
-      description: "Ceramic coating and paint protection film services",
+      description: "Paint protection film services",
     },
     {
       icon: <Droplets className="w-8 h-8" />,
@@ -80,11 +80,10 @@ export default function CrystalClearDetailing() {
     "/car-interior-leather-seats-cleaning.jpg",
     "/car-paint-correction.png",
     "/car-wheel-rim-detailing.jpg",
-    "/car-ceramic-coating.png",
     "/car-dashboard-interior-detailing.jpg",
   ]
 
-  const galleryImages = [...baseGallery, ...baseGallery, ...baseGallery]
+  const galleryImages = baseGallery
 
   const pricingPlans = [
     {
@@ -105,12 +104,12 @@ export default function CrystalClearDetailing() {
       popular: true,
     },
     {
-      name: "Ultimate Detail",
-      price: "$349",
+      name: "Paint Correction Detail",
+      price: "$350",
       features: [
         "Everything in Premium",
         "Paint correction",
-        "Ceramic coating",
+        "Full detail",
         "Leather conditioning",
         "Headlight restoration",
       ],
@@ -327,7 +326,7 @@ export default function CrystalClearDetailing() {
 
       {/* Services Section */}
       <section id="services" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#1a0723] to-[#421272]">
-        <div className="media-bg media-bg--services" aria-hidden="true" />
+        
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -376,7 +375,7 @@ export default function CrystalClearDetailing() {
 
       {/* About Section */}
       <section id="about" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#421272] to-[#1a0723]">
-        <div className="media-bg media-bg--about" aria-hidden="true" />
+        
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -404,7 +403,7 @@ export default function CrystalClearDetailing() {
 
       {/* Testimonials Section */}
       <section id="testimonials" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#1a0723] to-[#421272]">
-        <div className="media-bg media-bg--testimonials" aria-hidden="true" />
+        
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -475,7 +474,7 @@ export default function CrystalClearDetailing() {
 
       {/* Gallery Section */}
       <section id="gallery" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#421272] to-[#1a0723]">
-        <div className="media-bg media-bg--gallery" aria-hidden="true" />
+        
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -551,7 +550,7 @@ export default function CrystalClearDetailing() {
 
       {/* Pricing Section */}
       <section id="pricing" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#1a0723] to-[#421272]">
-        <div className="media-bg media-bg--pricing" aria-hidden="true" />
+        
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -744,7 +743,7 @@ export default function CrystalClearDetailing() {
                     </div>
                     <div>
                       <h3 className="text-white font-semibold mb-2">Service Areas</h3>
-                      <p className="text-[#e6c0dc]">Mobile service available throughout the Denver metro area</p>
+                      <p className="text-[#e6c0dc]">Mobile service available in Parker, Castle Rock, Franktown, Elizabeth, and the greater Denver metro area</p>
                     </div>
                   </div>
                 </CardContent>
