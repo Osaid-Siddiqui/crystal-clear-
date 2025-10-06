@@ -671,7 +671,7 @@ export default function CrystalClearDetailing() {
                 whileHover={{ y: -10 }}
               >
                 <Card
-                  className={`bg-[#421272]/50 border-[#634277] h-full relative ${
+                  className={`bg-[#421272]/60 border-[#634277] h-full relative flex flex-col ${
                     plan.popular ? "border-[#ac73e2] shadow-lg shadow-[#ac73e2]/20" : ""
                   }`}
                 >
@@ -686,8 +686,8 @@ export default function CrystalClearDetailing() {
                       {plan.price}
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-3">
+                  <CardContent className="flex flex-col flex-1 gap-6">
+                    <ul className="space-y-3 flex-1">
                       {plan.features.map((feature, i) => (
                         <li key={i} className="flex items-start gap-2 text-[#e6c0dc]">
                           <Star className="w-5 h-5 fill-[#cd507e] text-[#cd507e] flex-shrink-0 mt-0.5" />
@@ -696,7 +696,7 @@ export default function CrystalClearDetailing() {
                       ))}
                     </ul>
                     <Button
-                      className="w-full mt-6 bg-gradient-to-r from-[#9630b7] to-[#b13f9e] hover:from-[#8021d7] hover:to-[#cd507e] text-white border-0"
+                      className="w-full mt-auto bg-gradient-to-r from-[#9630b7] to-[#b13f9e] hover:from-[#8021d7] hover:to-[#cd507e] text-white border-0"
                       onClick={() => {
                         setSelectedPackage(plan.name)
                         setFormData((prev) => ({ ...prev, package: plan.name }))
