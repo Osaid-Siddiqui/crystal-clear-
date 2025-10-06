@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   Sparkles,
   Car,
@@ -48,7 +49,7 @@ export default function CrystalClearDetailing() {
     {
       icon: <Shield className="w-8 h-8" />,
       title: "Paint Protection",
-      description: "Ceramic coating and paint protection film services",
+      description: "Paint protection film services",
     },
     {
       icon: <Droplets className="w-8 h-8" />,
@@ -75,14 +76,15 @@ export default function CrystalClearDetailing() {
     },
   ]
 
-  const galleryImages = [
+  const baseGallery = [
     "/luxury-car-exterior-detailing-shine.jpg",
     "/car-interior-leather-seats-cleaning.jpg",
     "/car-paint-correction.png",
     "/car-wheel-rim-detailing.jpg",
-    "/car-ceramic-coating.png",
     "/car-dashboard-interior-detailing.jpg",
   ]
+
+  const galleryImages = baseGallery
 
   const pricingPlans = [
     {
@@ -103,12 +105,12 @@ export default function CrystalClearDetailing() {
       popular: true,
     },
     {
-      name: "Ultimate Detail",
-      price: "$349",
+      name: "Paint Correction Detail",
+      price: "$350",
       features: [
         "Everything in Premium",
         "Paint correction",
-        "Ceramic coating",
+        "Full detail",
         "Leather conditioning",
         "Headlight restoration",
       ],
@@ -147,39 +149,37 @@ export default function CrystalClearDetailing() {
     }
   }
 
+  const [selectedPackage, setSelectedPackage] = useState<string | null>(null)
+
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     phone: "",
+    package: "",
     message: "",
   })
 
   const [errors, setErrors] = useState({
     name: "",
-    email: "",
     phone: "",
+    package: "",
     message: "",
   })
 
   const validateForm = () => {
     const newErrors = {
       name: "",
-      email: "",
       phone: "",
+      package: "",
       message: "",
     }
 
     if (!formData.name.trim()) newErrors.name = "Name is required"
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required"
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid"
-    }
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone is required"
     } else if (!/^\d{10}$/.test(formData.phone.replace(/\D/g, ""))) {
       newErrors.phone = "Phone must be 10 digits"
     }
+    if (!formData.package.trim()) newErrors.package = "Please select a package"
     if (!formData.message.trim()) newErrors.message = "Message is required"
 
     setErrors(newErrors)
@@ -190,8 +190,48 @@ export default function CrystalClearDetailing() {
     e.preventDefault()
     if (validateForm()) {
       alert("Form submitted successfully!")
-      setFormData({ name: "", email: "", phone: "", message: "" })
+      setFormData({ name: "", phone: "", package: "", message: "" })
+      setSelectedPackage(null)
     }
+  }
+
+  const BeforeAfter = ({ index }: { index: number }) => {
+    const [pos, setPos] = useState(50)
+    const pairs = [
+      {
+        before: "/car-dashboard-interior-detailing.jpg",
+        after: "/car-interior-leather-seats-cleaning.jpg",
+        altB: "Interior before",
+        altA: "Interior after",
+      },
+      {
+        before: "/car-wheel-rim-detailing.jpg",
+        after: "/luxury-car-exterior-detailing-shine.jpg",
+        altB: "Exterior before",
+        altA: "Exterior after",
+      },
+    ]
+    const pair = index === 3 ? pairs[0] : pairs[1]
+    return (
+      <div className="relative rounded-lg overflow-hidden select-none md:col-span-2 lg:col-span-3 h-72 md:h-96 lg:h-[28rem]">
+        <Image src={pair.before} alt={pair.altB} fill className="object-cover" />
+        <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
+          <Image src={pair.after} alt={pair.altA} fill className="object-cover" />
+        </div>
+        <input
+          type="range"
+          min={0}
+          max={100}
+          value={pos}
+          onChange={(e) => setPos(Number(e.target.value))}
+          className="absolute bottom-3 left-1/2 -translate-x-1/2 w-2/3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:size-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#ac73e2]"
+          aria-label="Compare before and after"
+        />
+        <div className="absolute inset-y-0" style={{ left: `${pos}%` }}>
+          <div className="w-0.5 h-full bg-white/60" />
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -217,7 +257,7 @@ export default function CrystalClearDetailing() {
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
-                  className={`capitalize transition-colors hover:text-[#ac73e2] ${
+                  className={`capitalize hover-underline-slide hover-lift transition-colors hover:text-[#ac73e2] ${
                     activeSection === section ? "text-[#ac73e2]" : "text-white"
                   }`}
                 >
@@ -231,6 +271,7 @@ export default function CrystalClearDetailing() {
 
       {/* Hero Section */}
       <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+        <div className="media-bg media-bg--home" aria-hidden="true" />
         <div className="absolute inset-0 bg-gradient-to-br from-[#421272] via-[#1a0723] to-[#634277]" />
 
         {/* Animated stars */}
@@ -323,7 +364,8 @@ export default function CrystalClearDetailing() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20 bg-gradient-to-b from-[#1a0723] to-[#421272]">
+      <section id="services" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#1a0723] to-[#421272]">
+        
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -371,7 +413,8 @@ export default function CrystalClearDetailing() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-gradient-to-b from-[#421272] to-[#1a0723]">
+      <section id="about" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#421272] to-[#1a0723]">
+        
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -398,7 +441,8 @@ export default function CrystalClearDetailing() {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 bg-gradient-to-b from-[#1a0723] to-[#421272]">
+      <section id="testimonials" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#1a0723] to-[#421272]">
+        
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -453,13 +497,13 @@ export default function CrystalClearDetailing() {
 
             <button
               onClick={() => setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 bg-[#421272] hover:bg-[#634277] p-2 rounded-full transition-colors"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 bg-[#421272] hover:bg-[#634277] p-2 rounded-full transition-colors hover-lift"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
             <button
               onClick={() => setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 bg-[#421272] hover:bg-[#634277] p-2 rounded-full transition-colors"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 bg-[#421272] hover:bg-[#634277] p-2 rounded-full transition-colors hover-lift"
             >
               <ChevronRight className="w-6 h-6" />
             </button>
@@ -468,7 +512,8 @@ export default function CrystalClearDetailing() {
       </section>
 
       {/* Gallery Section */}
-      <section id="gallery" className="py-20 bg-gradient-to-b from-[#421272] to-[#1a0723]">
+      <section id="gallery" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#421272] to-[#1a0723]">
+        
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -484,32 +529,37 @@ export default function CrystalClearDetailing() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Gallery items with before/after sliders at positions 4 and 5 */}
             {galleryImages.map((image, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                className="relative aspect-video rounded-lg overflow-hidden cursor-pointer group"
-                onClick={() => setSelectedImage(index)}
-              >
-                <Image
-                  src={image || "/placeholder.svg"}
-                  alt={`Gallery image ${index + 1}`}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1a0723]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </motion.div>
+              index === 3 || index === 4 ? (
+                <BeforeAfter key={`ba-${index}`} index={index} />
+              ) : (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
+                  className="relative aspect-video rounded-lg overflow-hidden cursor-pointer group"
+                  onClick={() => setSelectedImage(index)}
+                >
+                  <Image
+                    src={image || "/placeholder.svg"}
+                    alt={`Gallery image ${index + 1}`}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1a0723]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </motion.div>
+              )
             ))}
           </div>
         </div>
 
         {/* Lightbox */}
         <AnimatePresence>
-          {selectedImage !== null && (
+          {selectedImage !== null && selectedImage !== 3 && selectedImage !== 4 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -543,7 +593,8 @@ export default function CrystalClearDetailing() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-20 bg-gradient-to-b from-[#1a0723] to-[#421272]">
+      <section id="pricing" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#1a0723] to-[#421272]">
+        
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -595,7 +646,11 @@ export default function CrystalClearDetailing() {
                     </ul>
                     <Button
                       className="w-full mt-6 bg-gradient-to-r from-[#9630b7] to-[#b13f9e] hover:from-[#8021d7] hover:to-[#cd507e] text-white border-0"
-                      onClick={() => scrollToSection("contact")}
+                      onClick={() => {
+                        setSelectedPackage(plan.name)
+                        setFormData((prev) => ({ ...prev, package: plan.name }))
+                        scrollToSection("contact")
+                      }}
                     >
                       Book Now
                     </Button>
@@ -608,7 +663,8 @@ export default function CrystalClearDetailing() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gradient-to-b from-[#421272] to-[#1a0723]">
+      <section id="contact" className="py-20 relative overflow-hidden bg-gradient-to-b from-[#421272] to-[#1a0723]">
+        <div className="media-bg media-bg--contact" aria-hidden="true" />
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -646,14 +702,22 @@ export default function CrystalClearDetailing() {
                       {errors.name && <p className="text-[#cd507e] text-sm mt-1">{errors.name}</p>}
                     </div>
                     <div>
-                      <Input
-                        type="email"
-                        placeholder="Your Email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="bg-[#1a0723] border-[#634277] text-white placeholder:text-[#634277]"
-                      />
-                      {errors.email && <p className="text-[#cd507e] text-sm mt-1">{errors.email}</p>}
+                      <Select
+                        value={formData.package || selectedPackage || ""}
+                        onValueChange={(value) => setFormData({ ...formData, package: value })}
+                      >
+                        <SelectTrigger className="bg-[#1a0723] border-[#634277] text-white w-full">
+                          <SelectValue placeholder="Select a package" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[#1a0723] border-[#634277] text-white">
+                          {pricingPlans.map((p) => (
+                            <SelectItem key={p.name} value={p.name}>
+                              {p.name} - {p.price}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {errors.package && <p className="text-[#cd507e] text-sm mt-1">{errors.package}</p>}
                     </div>
                     <div>
                       <Input
@@ -700,7 +764,7 @@ export default function CrystalClearDetailing() {
                     </div>
                     <div>
                       <h3 className="text-white font-semibold mb-2">Phone</h3>
-                      <a href="tel:7206412574" className="text-[#ac73e2] hover:text-[#cd507e] transition-colors">
+                      <a href="tel:7206412574" className="text-[#ac73e2] hover:text-[#cd507e] hover-underline-slide hover-lift transition-colors">
                         (720) 641-2574
                       </a>
                     </div>
@@ -718,7 +782,7 @@ export default function CrystalClearDetailing() {
                       <h3 className="text-white font-semibold mb-2">Email</h3>
                       <a
                         href="mailto:Tallyn.adams@gmail.com"
-                        className="text-[#ac73e2] hover:text-[#cd507e] transition-colors break-all"
+                        className="text-[#ac73e2] hover:text-[#cd507e] hover-underline-slide hover-lift transition-colors break-all"
                       >
                         Tallyn.adams@gmail.com
                       </a>
@@ -735,7 +799,7 @@ export default function CrystalClearDetailing() {
                     </div>
                     <div>
                       <h3 className="text-white font-semibold mb-2">Service Areas</h3>
-                      <p className="text-[#e6c0dc]">Mobile service available throughout the Denver metro area</p>
+                      <p className="text-[#e6c0dc]">Mobile service available in Parker, Castle Rock, Franktown, Elizabeth, and the greater Denver metro area</p>
                     </div>
                   </div>
                 </CardContent>
@@ -804,21 +868,21 @@ export default function CrystalClearDetailing() {
                 <motion.a
                   href="#"
                   whileHover={{ scale: 1.2, rotate: 5 }}
-                  className="w-10 h-10 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center text-white hover:shadow-lg hover:shadow-[#ac73e2]/50 transition-shadow"
+                  className="w-10 h-10 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center text-white hover:shadow-lg hover:shadow-[#ac73e2]/50 hover-lift transition-shadow"
                 >
                   <Facebook className="w-5 h-5" />
                 </motion.a>
                 <motion.a
                   href="#"
                   whileHover={{ scale: 1.2, rotate: 5 }}
-                  className="w-10 h-10 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center text-white hover:shadow-lg hover:shadow-[#ac73e2]/50 transition-shadow"
+                  className="w-10 h-10 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center text-white hover:shadow-lg hover:shadow-[#ac73e2]/50 hover-lift transition-shadow"
                 >
                   <Instagram className="w-5 h-5" />
                 </motion.a>
                 <motion.a
                   href="#"
                   whileHover={{ scale: 1.2, rotate: 5 }}
-                  className="w-10 h-10 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center text-white hover:shadow-lg hover:shadow-[#ac73e2]/50 transition-shadow"
+                  className="w-10 h-10 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center text-white hover:shadow-lg hover:shadow-[#ac73e2]/50 hover-lift transition-shadow"
                 >
                   <Linkedin className="w-5 h-5" />
                 </motion.a>
