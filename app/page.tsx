@@ -79,9 +79,9 @@ export default function CrystalClearDetailing() {
   const comparisonShowcases = [
     {
       before:
-        "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2Ff6f8fc2cf060497ab935c4e58e41c410?format=webp&width=800",
+        "/before.jpeg",
       after:
-        "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F782879bb55d341d5bbcceac1ee867eaa?format=webp&width=800",
+        "/after.jpeg",
       beforeAlt: "Vehicle before professional detailing",
       afterAlt: "Vehicle after professional detailing",
       label: "Foam Wash Transformation",
