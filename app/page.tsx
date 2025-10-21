@@ -539,18 +539,6 @@ export default function CrystalClearDetailing() {
             <p className="text-[#e6c0dc] text-lg">See the Crystal Clear difference</p>
           </motion.div>
 
-          <div className="flex flex-col md:flex-row gap-6 mb-12">
-            {comparisonShowcases.map((item) => (
-              <BeforeAfter
-                key={`comparison-${item.label}`}
-                before={item.before}
-                after={item.after}
-                beforeAlt={item.beforeAlt}
-                afterAlt={item.afterAlt}
-                label={item.label}
-              />
-            ))}
-          </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {galleryItems.map((item, index) => (
               <motion.div
