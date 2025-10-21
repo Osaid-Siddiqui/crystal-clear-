@@ -215,114 +215,32 @@ export default function CrystalClearDetailing() {
     return !Object.values(newErrors).some((error) => error !== "")
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<null | "success" | "error">(null)
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (validateForm()) {
-      alert("Form submitted successfully!")
-      setFormData({ name: "", phone: "", package: "", message: "" })
-      setSelectedPackage(null)
+    if (!validateForm()) return
+    setIsSubmitting(true)
+    setSubmitStatus(null)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      if (res.ok) {
+        setSubmitStatus('success')
+        setFormData({ name: '', phone: '', package: '', message: '' })
+        setSelectedPackage(null)
+      } else {
+        setSubmitStatus('error')
+      }
+    } catch (err) {
+      setSubmitStatus('error')
+    } finally {
+      setIsSubmitting(false)
     }
-  }
-
-  type BeforeAfterProps = {
-    before: string
-    after: string
-    beforeAlt: string
-    afterAlt: string
-    label: string
-  }
-
-  const BeforeAfter = ({ before, after, beforeAlt, afterAlt, label }: BeforeAfterProps) => {
-    const [position, setPosition] = useState(50)
-    const [isDragging, setIsDragging] = useState(false)
-    const frameRef = useRef<HTMLDivElement>(null)
-
-    const setPositionFromClientX = (clientX: number) => {
-      const frame = frameRef.current
-      if (!frame) return
-      const rect = frame.getBoundingClientRect()
-      if (rect.width === 0) return
-      const relative = ((clientX - rect.left) / rect.width) * 100
-      const clamped = Math.min(100, Math.max(0, relative))
-      setPosition(clamped)
-    }
-
-    const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-      event.preventDefault()
-      setIsDragging(true)
-      setPositionFromClientX(event.clientX)
-    }
-
-    const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-      if (!isDragging) return
-      setPositionFromClientX(event.clientX)
-    }
-
-    const handlePointerUp = () => {
-      setIsDragging(false)
-    }
-
-    const handleRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setPosition(Number(event.target.value))
-    }
-
-    const handleClassName = isDragging ? "comparison-handle comparison-handle--active" : "comparison-handle"
-
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="flex-1 min-w-[16rem]"
-      >
-        <div
-          ref={frameRef}
-          className="comparison-frame group relative h-56 sm:h-64 lg:h-72 rounded-2xl overflow-hidden border border-[#634277] bg-[#421272]/40 shadow-lg shadow-[#ac73e2]/20 transition-transform duration-300 hover:scale-[1.02]"
-          style={{ "--divider-position": `${position}%` } as React.CSSProperties}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerUp}
-          onPointerLeave={handlePointerUp}
-          role="group"
-          aria-label={`${label} before and after comparison`}
-        >
-          <Image
-            src={after}
-            alt={afterAlt}
-            fill
-            className="object-cover filter brightness-110 saturate-150 contrast-125 transition-transform duration-500 group-hover:scale-105"
-          />
-          <div className="comparison-highlight" aria-hidden="true" />
-          <div className="comparison-before">
-            <Image
-              src={before}
-              alt={beforeAlt}
-              fill
-              className="object-cover filter saturate-50 brightness-75 contrast-75 transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="comparison-before-overlay" aria-hidden="true" />
-          </div>
-          <div className="comparison-divider" aria-hidden="true" />
-          <div className="comparison-handle-wrapper" aria-hidden="true">
-            <span className={handleClassName} />
-          </div>
-          <span className="comparison-badge comparison-badge--before">Before</span>
-          <span className="comparison-badge comparison-badge--after">After</span>
-          <input
-            type="range"
-            min={0}
-            max={100}
-            value={position}
-            onChange={handleRangeChange}
-            className="comparison-range"
-            aria-label={`${label} comparison slider`}
-          />
-        </div>
-        <p className="mt-4 text-center text-xs sm:text-sm uppercase tracking-[0.2em] text-[#e6c0dc]">{label}</p>
-      </motion.div>
-    )
   }
 
   return (
