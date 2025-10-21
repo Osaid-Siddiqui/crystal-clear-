@@ -77,6 +77,25 @@ export default function CrystalClearDetailing() {
   ]
 
   const galleryItems = [
+    // Re-added before/after local images
+    {
+      src: "/before.jpeg",
+      alt: "Before detail",
+    },
+    {
+      src: "/after.jpeg",
+      alt: "After detail",
+    },
+    // Previously used CDN comparison images
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F378d899837ba46faa4d11a8488f9be99?format=webp&width=800",
+      alt: "Before finishing touches",
+    },
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F40d4105bd84d4d179fab4e96a8f6da4a?format=webp&width=800",
+      alt: "After finishing touches",
+    },
+    // User uploaded gallery images
     {
       src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2F87f75aefa01c4296b46414e132b0e39f?format=webp&width=800",
       alt: "Gallery image 1",
