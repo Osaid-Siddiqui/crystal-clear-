@@ -746,10 +746,13 @@ export default function CrystalClearDetailing() {
                     </div>
                     <Button
                       type="submit"
+                      disabled={isSubmitting}
                       className="w-full bg-gradient-to-r from-[#9630b7] to-[#b13f9e] hover:from-[#8021d7] hover:to-[#cd507e] text-white border-0"
                     >
-                      Send Message
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
                     </Button>
+                    {submitStatus === 'success' && <p className="text-green-400 text-sm mt-2">Message sent — we will be in touch shortly.</p>}
+                    {submitStatus === 'error' && <p className="text-[#cd507e] text-sm mt-2">There was an error sending your message. Please try again later.</p>}
                   </form>
                 </CardContent>
               </Card>
