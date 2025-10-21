@@ -76,47 +76,42 @@ export default function CrystalClearDetailing() {
     },
   ]
 
-  const comparisonShowcases = [
-    {
-      before:
-        "/before.jpeg",
-      after:
-        "/after.jpeg",
-      beforeAlt: "Vehicle before professional detailing",
-      afterAlt: "Vehicle after professional detailing",
-      label: "Foam Wash Transformation",
-    },
-    {
-      before:
-        "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F378d899837ba46faa4d11a8488f9be99?format=webp&width=800",
-      after:
-        "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F40d4105bd84d4d179fab4e96a8f6da4a?format=webp&width=800",
-      beforeAlt: "Vehicle before finishing touches",
-      afterAlt: "Vehicle after finishing touches",
-      label: "Gloss Finish Reveal",
-    },
-  ]
-
   const galleryItems = [
     {
-      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F5ed344284dcb4fd999bba1b5e28066f7?format=webp&width=800",
-      alt: "Detailed sedan with reflective finish parked in driveway",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2F87f75aefa01c4296b46414e132b0e39f?format=webp&width=800",
+      alt: "Gallery image 1",
     },
     {
-      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F27f5912ef4b4463db778766262f019d9?format=webp&width=800",
-      alt: "Vehicle covered in thick foam during wash",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2Fe7a71e0b5cfa4315a6f6afe2f551eff7?format=webp&width=800",
+      alt: "Gallery image 2",
     },
     {
-      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F26505d29058e4d91baa421879a6e25f7?format=webp&width=800",
-      alt: "Clean white SUV exterior after detailing",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2F79c023b006dc437290759df436f2f4d1?format=webp&width=800",
+      alt: "Gallery image 3",
     },
     {
-      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2Ff7d45c2cfd774ea4a0045998f6c5f575?format=webp&width=800",
-      alt: "Freshly detailed SUV interior seating area",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2F0061a786d8c5414fbaf74cc7595ac195?format=webp&width=800",
+      alt: "Gallery image 4",
     },
     {
-      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F89c76cf403a247cbbab351635be18d51?format=webp&width=800",
-      alt: "Spotless cargo area after deep cleaning",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2F7b5910c64f7e4d0f95e058ed42db8172?format=webp&width=800",
+      alt: "Gallery image 5",
+    },
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2F0edea28513a4455fbe64e79afa4df26f?format=webp&width=800",
+      alt: "Gallery image 6",
+    },
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2F91475d96e5b1462db218c002a922cc0f?format=webp&width=800",
+      alt: "Gallery image 7",
+    },
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2Fd0a1f5eda33941a6afa3000125a890df?format=webp&width=800",
+      alt: "Gallery image 8",
+    },
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2F538dfa6864494595b437cae0270b01af?format=webp&width=800",
+      alt: "Gallery image 9",
     },
   ]
 
