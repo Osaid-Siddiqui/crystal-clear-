@@ -371,25 +371,27 @@ export default function CrystalClearDetailing() {
         <div className="absolute inset-0 bg-gradient-to-br from-[#421272] via-[#1a0723] to-[#634277]" />
 
         {/* Animated stars */}
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-[#ac73e2] rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              opacity: [0.2, 1, 0.2],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: 2 + Math.random() * 2,
-              repeat: Number.POSITIVE_INFINITY,
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
+        {(() => {
+          const rand = (n: number) => {
+            const x = Math.sin(n * 12.9898) * 43758.5453
+            return x - Math.floor(x)
+          }
+          return Array.from({ length: 20 }).map((_, i) => {
+            const left = `${rand(i) * 100}%`
+            const top = `${rand(i + 1) * 100}%`
+            const duration = 2 + rand(i + 2) * 2
+            const delay = rand(i + 3) * 2
+            return (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 bg-[#ac73e2] rounded-full"
+                style={{ left, top }}
+                animate={{ opacity: [0.2, 1, 0.2], scale: [1, 1.5, 1] }}
+                transition={{ duration, repeat: Number.POSITIVE_INFINITY, delay }}
+              />
+            )
+          })
+        })()}
 
         <motion.div className="container mx-auto px-4 text-center relative z-10" style={{ opacity, scale }}>
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
