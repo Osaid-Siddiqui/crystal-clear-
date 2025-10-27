@@ -76,47 +76,61 @@ export default function CrystalClearDetailing() {
     },
   ]
 
-  const comparisonShowcases = [
-    {
-      before:
-        "/before.jpeg",
-      after:
-        "/after.jpeg",
-      beforeAlt: "Vehicle before professional detailing",
-      afterAlt: "Vehicle after professional detailing",
-      label: "Foam Wash Transformation",
-    },
-    {
-      before:
-        "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F378d899837ba46faa4d11a8488f9be99?format=webp&width=800",
-      after:
-        "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F40d4105bd84d4d179fab4e96a8f6da4a?format=webp&width=800",
-      beforeAlt: "Vehicle before finishing touches",
-      afterAlt: "Vehicle after finishing touches",
-      label: "Gloss Finish Reveal",
-    },
-  ]
-
   const galleryItems = [
+    // Re-added before/after local images
     {
-      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F5ed344284dcb4fd999bba1b5e28066f7?format=webp&width=800",
-      alt: "Detailed sedan with reflective finish parked in driveway",
+      src: "/before.jpeg",
+      alt: "Before detail",
     },
     {
-      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F27f5912ef4b4463db778766262f019d9?format=webp&width=800",
-      alt: "Vehicle covered in thick foam during wash",
+      src: "/after.jpeg",
+      alt: "After detail",
+    },
+    // Previously used CDN comparison images
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F378d899837ba46faa4d11a8488f9be99?format=webp&width=800",
+      alt: "Before finishing touches",
     },
     {
-      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F26505d29058e4d91baa421879a6e25f7?format=webp&width=800",
-      alt: "Clean white SUV exterior after detailing",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F40d4105bd84d4d179fab4e96a8f6da4a?format=webp&width=800",
+      alt: "After finishing touches",
+    },
+    // User uploaded gallery images
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2F87f75aefa01c4296b46414e132b0e39f?format=webp&width=800",
+      alt: "Gallery image 1",
     },
     {
-      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2Ff7d45c2cfd774ea4a0045998f6c5f575?format=webp&width=800",
-      alt: "Freshly detailed SUV interior seating area",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2Fe7a71e0b5cfa4315a6f6afe2f551eff7?format=webp&width=800",
+      alt: "Gallery image 2",
     },
     {
-      src: "https://cdn.builder.io/api/v1/image/assets%2F8c6d7a650220406faecf204320385873%2F89c76cf403a247cbbab351635be18d51?format=webp&width=800",
-      alt: "Spotless cargo area after deep cleaning",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2F79c023b006dc437290759df436f2f4d1?format=webp&width=800",
+      alt: "Gallery image 3",
+    },
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2F0061a786d8c5414fbaf74cc7595ac195?format=webp&width=800",
+      alt: "Gallery image 4",
+    },
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2F7b5910c64f7e4d0f95e058ed42db8172?format=webp&width=800",
+      alt: "Gallery image 5",
+    },
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2F0edea28513a4455fbe64e79afa4df26f?format=webp&width=800",
+      alt: "Gallery image 6",
+    },
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2F91475d96e5b1462db218c002a922cc0f?format=webp&width=800",
+      alt: "Gallery image 7",
+    },
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2Fd0a1f5eda33941a6afa3000125a890df?format=webp&width=800",
+      alt: "Gallery image 8",
+    },
+    {
+      src: "https://cdn.builder.io/api/v1/image/assets%2F9c049c4f6a364c33b74ad6769e7a238f%2F538dfa6864494595b437cae0270b01af?format=webp&width=800",
+      alt: "Gallery image 9",
     },
   ]
 
@@ -220,114 +234,32 @@ export default function CrystalClearDetailing() {
     return !Object.values(newErrors).some((error) => error !== "")
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<null | "success" | "error">(null)
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (validateForm()) {
-      alert("Form submitted successfully!")
-      setFormData({ name: "", phone: "", package: "", message: "" })
-      setSelectedPackage(null)
+    if (!validateForm()) return
+    setIsSubmitting(true)
+    setSubmitStatus(null)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      if (res.ok) {
+        setSubmitStatus('success')
+        setFormData({ name: '', phone: '', package: '', message: '' })
+        setSelectedPackage(null)
+      } else {
+        setSubmitStatus('error')
+      }
+    } catch (err) {
+      setSubmitStatus('error')
+    } finally {
+      setIsSubmitting(false)
     }
-  }
-
-  type BeforeAfterProps = {
-    before: string
-    after: string
-    beforeAlt: string
-    afterAlt: string
-    label: string
-  }
-
-  const BeforeAfter = ({ before, after, beforeAlt, afterAlt, label }: BeforeAfterProps) => {
-    const [position, setPosition] = useState(50)
-    const [isDragging, setIsDragging] = useState(false)
-    const frameRef = useRef<HTMLDivElement>(null)
-
-    const setPositionFromClientX = (clientX: number) => {
-      const frame = frameRef.current
-      if (!frame) return
-      const rect = frame.getBoundingClientRect()
-      if (rect.width === 0) return
-      const relative = ((clientX - rect.left) / rect.width) * 100
-      const clamped = Math.min(100, Math.max(0, relative))
-      setPosition(clamped)
-    }
-
-    const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-      event.preventDefault()
-      setIsDragging(true)
-      setPositionFromClientX(event.clientX)
-    }
-
-    const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-      if (!isDragging) return
-      setPositionFromClientX(event.clientX)
-    }
-
-    const handlePointerUp = () => {
-      setIsDragging(false)
-    }
-
-    const handleRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setPosition(Number(event.target.value))
-    }
-
-    const handleClassName = isDragging ? "comparison-handle comparison-handle--active" : "comparison-handle"
-
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="flex-1 min-w-[16rem]"
-      >
-        <div
-          ref={frameRef}
-          className="comparison-frame group relative h-56 sm:h-64 lg:h-72 rounded-2xl overflow-hidden border border-[#634277] bg-[#421272]/40 shadow-lg shadow-[#ac73e2]/20 transition-transform duration-300 hover:scale-[1.02]"
-          style={{ "--divider-position": `${position}%` } as React.CSSProperties}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerUp}
-          onPointerLeave={handlePointerUp}
-          role="group"
-          aria-label={`${label} before and after comparison`}
-        >
-          <Image
-            src={after}
-            alt={afterAlt}
-            fill
-            className="object-cover filter brightness-110 saturate-150 contrast-125 transition-transform duration-500 group-hover:scale-105"
-          />
-          <div className="comparison-highlight" aria-hidden="true" />
-          <div className="comparison-before">
-            <Image
-              src={before}
-              alt={beforeAlt}
-              fill
-              className="object-cover filter saturate-50 brightness-75 contrast-75 transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="comparison-before-overlay" aria-hidden="true" />
-          </div>
-          <div className="comparison-divider" aria-hidden="true" />
-          <div className="comparison-handle-wrapper" aria-hidden="true">
-            <span className={handleClassName} />
-          </div>
-          <span className="comparison-badge comparison-badge--before">Before</span>
-          <span className="comparison-badge comparison-badge--after">After</span>
-          <input
-            type="range"
-            min={0}
-            max={100}
-            value={position}
-            onChange={handleRangeChange}
-            className="comparison-range"
-            aria-label={`${label} comparison slider`}
-          />
-        </div>
-        <p className="mt-4 text-center text-xs sm:text-sm uppercase tracking-[0.2em] text-[#e6c0dc]">{label}</p>
-      </motion.div>
-    )
   }
 
   return (
@@ -371,25 +303,27 @@ export default function CrystalClearDetailing() {
         <div className="absolute inset-0 bg-gradient-to-br from-[#421272] via-[#1a0723] to-[#634277]" />
 
         {/* Animated stars */}
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-[#ac73e2] rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              opacity: [0.2, 1, 0.2],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: 2 + Math.random() * 2,
-              repeat: Number.POSITIVE_INFINITY,
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
+        {(() => {
+          const rand = (n: number) => {
+            const x = Math.sin(n * 12.9898) * 43758.5453
+            return x - Math.floor(x)
+          }
+          return Array.from({ length: 20 }).map((_, i) => {
+            const left = `${rand(i) * 100}%`
+            const top = `${rand(i + 1) * 100}%`
+            const duration = 2 + rand(i + 2) * 2
+            const delay = rand(i + 3) * 2
+            return (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 bg-[#ac73e2] rounded-full"
+                style={{ left, top }}
+                animate={{ opacity: [0.2, 1, 0.2], scale: [1, 1.5, 1] }}
+                transition={{ duration, repeat: Number.POSITIVE_INFINITY, delay }}
+              />
+            )
+          })
+        })()}
 
         <motion.div className="container mx-auto px-4 text-center relative z-10" style={{ opacity, scale }}>
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
@@ -624,18 +558,6 @@ export default function CrystalClearDetailing() {
             <p className="text-[#e6c0dc] text-lg">See the Crystal Clear difference</p>
           </motion.div>
 
-          <div className="flex flex-col md:flex-row gap-6 mb-12">
-            {comparisonShowcases.map((item) => (
-              <BeforeAfter
-                key={`comparison-${item.label}`}
-                before={item.before}
-                after={item.after}
-                beforeAlt={item.beforeAlt}
-                afterAlt={item.afterAlt}
-                label={item.label}
-              />
-            ))}
-          </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {galleryItems.map((item, index) => (
               <motion.div
@@ -805,6 +727,71 @@ export default function CrystalClearDetailing() {
               <input type="hidden" name="_next" value="https://yourdomain.com/thank-you" />
               <input type="hidden" name="_captcha" value="false" />
               <input type="hidden" name="_subject" value="New Message from AutoLux Contact Form" />
+              <Card className="bg-[#421272]/80 border-[#634277] backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-white">Send us a message</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                      <Input
+                        placeholder="Your Name"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className="bg-[#1a0723] border-[#634277] text-white placeholder:text-[#634277]"
+                      />
+                      {errors.name && <p className="text-[#cd507e] text-sm mt-1">{errors.name}</p>}
+                    </div>
+                    <div>
+                      <Select
+                        value={formData.package || selectedPackage || ""}
+                        onValueChange={(value) => setFormData({ ...formData, package: value })}
+                      >
+                        <SelectTrigger className="bg-[#1a0723] border-[#634277] text-white w-full">
+                          <SelectValue placeholder="Select a package" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[#1a0723] border-[#634277] text-white">
+                          {pricingPlans.map((p) => (
+                            <SelectItem key={p.name} value={p.name}>
+                              {p.name} - {p.price}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {errors.package && <p className="text-[#cd507e] text-sm mt-1">{errors.package}</p>}
+                    </div>
+                    <div>
+                      <Input
+                        type="tel"
+                        placeholder="Your Phone"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        className="bg-[#1a0723] border-[#634277] text-white placeholder:text-[#634277]"
+                      />
+                      {errors.phone && <p className="text-[#cd507e] text-sm mt-1">{errors.phone}</p>}
+                    </div>
+                    <div>
+                      <Textarea
+                        placeholder="Your Message"
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        className="bg-[#1a0723] border-[#634277] text-white placeholder:text-[#634277] min-h-32"
+                      />
+                      {errors.message && <p className="text-[#cd507e] text-sm mt-1">{errors.message}</p>}
+                    </div>
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-gradient-to-r from-[#9630b7] to-[#b13f9e] hover:from-[#8021d7] hover:to-[#cd507e] text-white border-0"
+                    >
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
+                    </Button>
+                    {submitStatus === 'success' && <p className="text-green-400 text-sm mt-2">Message sent — we will be in touch shortly.</p>}
+                    {submitStatus === 'error' && <p className="text-[#cd507e] text-sm mt-2">There was an error sending your message. Please try again later.</p>}
+                  </form>
+                </CardContent>
+              </Card>
+            </motion.div>
 
               <div>
                 <Input
