@@ -4,7 +4,6 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
-import FullStoryLoader from "@/components/fullstory-loader"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -23,7 +22,6 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <Suspense fallback={null}>{children}</Suspense>
-        <FullStoryLoader />
         <Analytics />
       </body>
     </html>
