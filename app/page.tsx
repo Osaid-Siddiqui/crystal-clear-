@@ -245,6 +245,8 @@ export default function CrystalClearDetailing() {
       Object.entries(formData).forEach(([key, value]) => {
         formDataToSend.append(key, String(value))
       })
+      // Add a subject so the email is easier to identify
+      formDataToSend.append("_subject", `Contact from ${formData.name || "website"}`)
 
       const response = await fetch("https://formspree.io/f/xqagboly", {
         method: "POST",
@@ -254,14 +256,34 @@ export default function CrystalClearDetailing() {
         },
       })
 
+      // Try to parse response body for more details
+      let body = null
+      try {
+        body = await response.json()
+      } catch (err) {
+        // ignore JSON parse errors
+      }
+
       if (response.ok) {
         setSubmitStatus("success")
         setFormData({ name: "", phone: "", package: "", message: "" })
         setSelectedPackage(null)
       } else {
+        // If Formspree returns validation errors, map them to our UI
+        if (body && body.errors && Array.isArray(body.errors)) {
+          const newErrors = { ...errors }
+          body.errors.forEach((err: any) => {
+            if (err.field && newErrors.hasOwnProperty(err.field)) {
+              newErrors[err.field as keyof typeof newErrors] = err.message || "Invalid value"
+            }
+          })
+          setErrors(newErrors)
+        }
         setSubmitStatus("error")
+        console.error("Formspree error", body || response.status)
       }
     } catch (error) {
+      console.error("Network or submit error", error)
       setSubmitStatus("error")
     } finally {
       setIsSubmitting(false)
