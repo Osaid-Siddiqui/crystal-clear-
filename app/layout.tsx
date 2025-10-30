@@ -22,6 +22,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <Suspense fallback={null}>{children}</Suspense>
+        <FullStoryLoader />
         <Analytics />
       </body>
     </html>
