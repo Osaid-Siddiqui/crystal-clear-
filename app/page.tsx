@@ -734,12 +734,23 @@ export default function CrystalClearDetailing() {
                         name="name"
                         placeholder="Your Name"
                         required
+                        value={formData.name}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
                         className="bg-[#1a0723] border-[#634277] text-white placeholder:text-[#634277]"
                       />
+                      {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
                     </div>
 
                     <div>
-                      <Select name="package" required>
+                      <Select
+                        name="package"
+                        required
+                        onValueChange={(value) => {
+                          setFormData((prev) => ({ ...prev, package: value }))
+                          setSelectedPackage(value)
+                        }}
+                        value={formData.package || undefined}
+                      >
                         <SelectTrigger className="bg-[#1a0723] border-[#634277] text-white w-full">
                           <SelectValue placeholder="Select a package" />
                         </SelectTrigger>
@@ -751,6 +762,7 @@ export default function CrystalClearDetailing() {
                           ))}
                         </SelectContent>
                       </Select>
+                      {errors.package && <p className="text-red-400 text-sm mt-1">{errors.package}</p>}
                     </div>
 
                     <div>
@@ -759,8 +771,11 @@ export default function CrystalClearDetailing() {
                         name="phone"
                         placeholder="Your Phone"
                         required
+                        value={formData.phone}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value }))}
                         className="bg-[#1a0723] border-[#634277] text-white placeholder:text-[#634277]"
                       />
+                      {errors.phone && <p className="text-red-400 text-sm mt-1">{errors.phone}</p>}
                     </div>
 
                     <div>
@@ -768,8 +783,11 @@ export default function CrystalClearDetailing() {
                         name="message"
                         placeholder="Your Message"
                         required
+                        value={formData.message}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
                         className="bg-[#1a0723] border-[#634277] text-white placeholder:text-[#634277] min-h-32"
                       />
+                      {errors.message && <p className="text-red-400 text-sm mt-1">{errors.message}</p>}
                     </div>
 
                     <Button
