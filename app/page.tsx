@@ -688,188 +688,251 @@ export default function CrystalClearDetailing() {
       </section>
 
       {/* Contact Section */}
-        <section
-          id="contact"
-          className="py-20 relative overflow-hidden bg-gradient-to-b from-[#421272] to-[#1a0723]"
+        "use client"
+
+import { useState } from "react"
+import { motion } from "framer-motion"
+import { Phone, Mail, MapPin } from "lucide-react"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+// Assuming pricingPlans is defined elsewhere (e.g., imported from pricing.tsx)
+const pricingPlans = [
+  { name: "Basic Wash", price: "$50" },
+  { name: "Deluxe Detailing", price: "$100" },
+  { name: "Premium Package", price: "$150" },
+  // Add actual plans as needed
+]
+
+export default function Contact() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null)
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitStatus(null)
+
+    try {
+      const formData = new FormData(e.currentTarget)
+      const response = await fetch("https://formspree.io/f/xqagboly", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      })
+
+      if (response.ok) {
+        setSubmitStatus("success")
+        e.currentTarget.reset() // Reset form fields
+      } else {
+        setSubmitStatus("error")
+      }
+    } catch (error) {
+      setSubmitStatus("error")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <section
+      id="contact"
+      className="py-20 relative overflow-hidden bg-gradient-to-b from-[#421272] to-[#1a0723]"
+    >
+      <div className="media-bg media-bg--contact" aria-hidden="true" />
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
         >
-          <div className="media-bg media-bg--contact" aria-hidden="true" />
-          <div className="container mx-auto px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-[#9630b7] to-[#cd507e] bg-clip-text text-transparent">
-                Get In Touch
-              </h2>
-              <p className="text-[#e6c0dc] text-lg">
-                Ready to make your car shine? Contact us today!
-              </p>
-            </motion.div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-[#9630b7] to-[#cd507e] bg-clip-text text-transparent">
+            Get In Touch
+          </h2>
+          <p className="text-[#e6c0dc] text-lg">
+            Ready to make your car shine? Contact us today!
+          </p>
+        </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                <Card className="bg-[#421272]/80 border-[#634277] backdrop-blur-sm">
-                  <CardHeader>
-                    <CardTitle className="text-white">Send us a message</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <form
-                      action="https://formsubmit.co/Tallyn.adams@gmail.com"
-                      method="POST"
-                      className="space-y-4"
+        <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <Card className="bg-[#421272]/80 border-[#634277] backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-white">Send us a message</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <Input
+                      type="text"
+                      name="name"
+                      placeholder="Your Name"
+                      required
+                      className="bg-[#1a0723] border-[#634277] text-white placeholder:text-[#634277]"
+                    />
+                  </div>
+
+                  <div>
+                    <Select name="package" required>
+                      <SelectTrigger className="bg-[#1a0723] border-[#634277] text-white w-full">
+                        <SelectValue placeholder="Select a package" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-[#1a0723] border-[#634277] text-white">
+                        {pricingPlans.map((p) => (
+                          <SelectItem key={p.name} value={p.name}>
+                            {p.name} - {p.price}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Input
+                      type="tel"
+                      name="phone"
+                      placeholder="Your Phone"
+                      required
+                      className="bg-[#1a0723] border-[#634277] text-white placeholder:text-[#634277]"
+                    />
+                  </div>
+
+                  <div>
+                    <Textarea
+                      name="message"
+                      placeholder="Your Message"
+                      required
+                      className="bg-[#1a0723] border-[#634277] text-white placeholder:text-[#634277] min-h-32"
+                    />
+                  </div>
+
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-gradient-to-r from-[#9630b7] to-[#b13f9e] hover:from-[#8021d7] hover:to-[#cd507e] text-white border-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? "Sending..." : "Send Message"}
+                  </Button>
+
+                  {submitStatus === "success" && (
+                    <div className="mt-4 p-4 bg-green-900/50 border border-green-500 rounded-lg text-green-300 text-center">
+                      Message sent! We'll get back to you soon.
+                    </div>
+                  )}
+                  {submitStatus === "error" && (
+                    <div className="mt-4 p-4 bg-red-900/50 border border-red-500 rounded-lg text-red-300 text-center">
+                      Something went wrong. Please try again.
+                    </div>
+                  )}
+                </form>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="space-y-6"
+          >
+            <Card className="bg-[#421272]/80 border-[#634277] backdrop-blur-sm">
+              <CardContent className="pt-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold mb-2">Phone</h3>
+                    <a
+                      href="tel:7206412574"
+                      className="text-[#ac73e2] hover:text-[#cd507e] transition-colors"
                     >
-                      {/* Hidden fields for FormSubmit options */}
-                      <input type="hidden" name="_subject" value="New Contact Form Submission - AutoLux Detailing" />
-                      <input type="hidden" name="_captcha" value="false" />
-                      <input type="hidden" name="_template" value="table" />
-
-                      <div>
-                        <Input
-                          type="text"
-                          name="name"
-                          placeholder="Your Name"
-                          required
-                          className="bg-[#1a0723] border-[#634277] text-white placeholder:text-[#634277]"
-                        />
-                      </div>
-
-                      <div>
-                        <Select name="package" required>
-                          <SelectTrigger className="bg-[#1a0723] border-[#634277] text-white w-full">
-                            <SelectValue placeholder="Select a package" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-[#1a0723] border-[#634277] text-white">
-                            {pricingPlans.map((p) => (
-                              <SelectItem key={p.name} value={p.name}>
-                                {p.name} - {p.price}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div>
-                        <Input
-                          type="tel"
-                          name="phone"
-                          placeholder="Your Phone"
-                          required
-                          className="bg-[#1a0723] border-[#634277] text-white placeholder:text-[#634277]"
-                        />
-                      </div>
-
-                      <div>
-                        <Textarea
-                          name="message"
-                          placeholder="Your Message"
-                          required
-                          className="bg-[#1a0723] border-[#634277] text-white placeholder:text-[#634277] min-h-32"
-                        />
-                      </div>
-
-                      <Button
-                        type="submit"
-                        className="w-full bg-gradient-to-r from-[#9630b7] to-[#b13f9e] hover:from-[#8021d7] hover:to-[#cd507e] text-white border-0"
-                      >
-                        Send Message
-                      </Button>
-                    </form>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="space-y-6"
-              >
-                <Card className="bg-[#421272]/80 border-[#634277] backdrop-blur-sm">
-                  <CardContent className="pt-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center flex-shrink-0">
-                        <Phone className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-white font-semibold mb-2">Phone</h3>
-                        <a
-                          href="tel:7206412574"
-                          className="text-[#ac73e2] hover:text-[#cd507e] transition-colors"
-                        >
-                          (720) 641-2574
-                        </a>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-[#421272]/80 border-[#634277] backdrop-blur-sm">
-                  <CardContent className="pt-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center flex-shrink-0">
-                        <Mail className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-white font-semibold mb-2">Email</h3>
-                        <a
-                          href="mailto:Tallyn.adams@gmail.com"
-                          className="text-[#ac73e2] hover:text-[#cd507e] transition-colors break-all"
-                        >
-                          Tallyn.adams@gmail.com
-                        </a>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-[#421272]/80 border-[#634277] backdrop-blur-sm">
-                  <CardContent className="pt-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center flex-shrink-0">
-                        <MapPin className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-white font-semibold mb-2">Service Areas</h3>
-                        <p className="text-[#e6c0dc]">
-                          Mobile service available in Parker, Castle Rock, Franktown,
-                          Elizabeth, and the greater Denver metro area
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <div className="flex gap-4 justify-center pt-4">
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-[#9630b7] to-[#b13f9e] hover:from-[#8021d7] hover:to-[#cd507e] text-white border-0"
-                    onClick={() => (window.location.href = 'tel:7206412574')}
-                  >
-                    <Phone className="w-5 h-5 mr-2" />
-                    Call Now
-                  </Button>
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-[#9630b7] to-[#b13f9e] hover:from-[#8021d7] hover:to-[#cd507e] text-white border-0"
-                    onClick={() => (window.location.href = 'mailto:Tallyn.adams@gmail.com')}
-                  >
-                    <Mail className="w-5 h-5 mr-2" />
-                    Email Us
-                  </Button>
+                      (720) 641-2574
+                    </a>
+                  </div>
                 </div>
-              </motion.div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-[#421272]/80 border-[#634277] backdrop-blur-sm">
+              <CardContent className="pt-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold mb-2">Email</h3>
+                    <a
+                      href="mailto:Tallyn.adams@gmail.com"
+                      className="text-[#ac73e2] hover:text-[#cd507e] transition-colors break-all"
+                    >
+                      Tallyn.adams@gmail.com
+                    </a>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-[#421272]/80 border-[#634277] backdrop-blur-sm">
+              <CardContent className="pt-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#9630b7] to-[#cd507e] flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold mb-2">Service Areas</h3>
+                    <p className="text-[#e6c0dc]">
+                      Mobile service available in Parker, Castle Rock, Franktown,
+                      Elizabeth, and the greater Denver metro area
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="flex gap-4 justify-center pt-4">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-[#9630b7] to-[#b13f9e] hover:from-[#8021d7] hover:to-[#cd507e] text-white border-0"
+                onClick={() => (window.location.href = "tel:7206412574")}
+              >
+                <Phone className="w-5 h-5 mr-2" />
+                Call Now
+              </Button>
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-[#9630b7] to-[#b13f9e] hover:from-[#8021d7] hover:to-[#cd507e] text-white border-0"
+                onClick={() => (window.location.href = "mailto:Tallyn.adams@gmail.com")}
+              >
+                <Mail className="w-5 h-5 mr-2" />
+                Email Us
+              </Button>
             </div>
-          </div>
-        </section>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  )
+}
 
 
 
